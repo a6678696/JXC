@@ -2,8 +2,13 @@ package com.ledao.controller;
 
 import com.ledao.entity.User;
 import com.ledao.util.StringUtil;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -11,11 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户Controller
@@ -25,7 +25,7 @@ import java.util.Map;
  * @create 2020-01-07 22:38
  */
 @Controller
-@RestController("/user")
+@RequestMapping("/user")
 public class UserController {
 
     @ResponseBody
@@ -54,7 +54,7 @@ public class UserController {
             subject.login(token);
             map.put("success", true);
             return map;
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("success", false);
             map.put("errorInfo", "用户名或密码错误!");
