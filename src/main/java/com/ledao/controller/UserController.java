@@ -105,4 +105,18 @@ public class UserController {
         map.put("success", true);
         return map;
     }
+
+    /**
+     * 加载当前用户信息
+     *
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/loadUserInfo")
+    public String loadUserInfo(HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        Role currentRole = (Role) session.getAttribute("currentRole");
+        return "欢迎您:" + currentUser.getTrueName() + "&nbsp;[&nbsp;" + currentRole.getName() + "&nbsp;]";
+    }
 }

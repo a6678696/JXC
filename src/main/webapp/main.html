@@ -2,9 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>后台主页面</title>
+    <title>后台管理-进销存管理系统</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <style type="text/css">
+        .clock {
+            float: right;
+            width: 300px;
+            height: 30px;
+            padding-left: 20px;
+            color: rgb(0, 76, 126);
+            background: url(/static/images/clock.gif) no-repeat;
+            font-size: 14px;
+        }
+
+        .userInfo {
+            float: left;
+            padding-left: 20px;
+            padding-top: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+        function showTime() {
+            var date = new Date();
+            this.year = date.getFullYear();
+            this.month = date.getMonth() + 1;
+            this.date = date.getDate();
+            this.day = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")[date.getDay()];
+            this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+            $("#clock").text("现在是:" + this.year + "年" + this.month + "月" + this.date + "日 " + this.hour + ":" + this.minute + ":" + this.second + " " + this.day);
+        }
+
+        $(document).ready(function () {
+
+            window.setInterval("showTime()", 1000);
+
+            $("#userInfo").load("/user/loadUserInfo"); // 加载用户信息
+        });
+    </script>
 </head>
-<body>
-欢迎你
+<body class="easyui-layout">
+<div region="north" style="height: 72px;">
+    <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="381px" style="background:url(/static/images/top_left.jpg)">
+            </td>
+            <td style="background:url(/static/images/top_center.jpg)">
+                <div id="userInfo" class="userInfo"></div>
+            </td>
+            <td valign="bottom" width="544px" style="background:url(/static/images/top_right.jpg)">
+                <div id="clock" class="clock"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div region="center">
+</div>
+
+<div region="west" style="width: 200px" title="导航菜单" split="true" iconCls="icon-navigation">
+</div>
+
+<div region="south" style="height: 30px;padding: 5px" align="center">
+    Copyright © 1500330333ztl  版权所有
+</div>
+
 </body>
 </html>
