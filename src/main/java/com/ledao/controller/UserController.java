@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController{
 
     @Resource
     private UserService userService;
@@ -59,7 +59,7 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping("/login")
-    public Map<String, Object> login(String imageCode, @Valid User user, BindingResult bindingResult, HttpSession session) {
+    public Map<String, Object> login(String imageCode, @Valid User user, BindingResult bindingResult, HttpSession session){
         Map<String, Object> map = new HashMap<>(16);
         //判断用户名和密码是否输入
         if (bindingResult.hasErrors()) {

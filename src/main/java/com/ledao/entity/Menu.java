@@ -3,6 +3,7 @@ package com.ledao.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 菜单实体
@@ -14,7 +15,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "t_menu")
-public class Menu {
+public class Menu implements Serializable {
+
+    private static final long serialVersionUID = -8628636035214932649L;
 
     /**
      * 编号

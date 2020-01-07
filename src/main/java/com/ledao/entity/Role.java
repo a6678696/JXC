@@ -3,6 +3,7 @@ package com.ledao.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 角色实体
@@ -14,7 +15,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name="t_role")
-public class Role {
+public class Role implements Serializable {
+
+    private static final long serialVersionUID = 1908576881377362453L;
 
     /**
      * 编号
