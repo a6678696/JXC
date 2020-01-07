@@ -3,6 +3,7 @@ package com.ledao.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 /**
  * 用户实体
@@ -26,12 +27,14 @@ public class User {
     /**
      * 用户名
      */
+    @NotEmpty(message = "请输入用户名!")
     @Column(length=50)
     private String userName;
 
     /**
      * 密码
      */
+    @NotEmpty(message = "请输入密码!")
     @Column(length=50)
     private String password;
 
