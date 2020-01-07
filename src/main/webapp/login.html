@@ -39,7 +39,7 @@
             width: 25%;
             height: 15%;
             padding: 16px;
-            border: 2 solid black;
+            border: solid black;
             background-color: white;
             z-index: 1002;
             overflow: auto;
@@ -82,7 +82,7 @@
             width: 25%;
             height: 15%;
             padding: 16px;
-            border: 2 solid black;
+            border: solid black;
             background-color: white;
             z-index: 1002;
             overflow: auto;
@@ -108,13 +108,44 @@
                     "imageCode": $("#imageCode").val()
                 }, function (result) {
                     if (result.success) {
-                        alert("登录成功！");
+                        //登录成功后的用户只能以一种身份进入后台
+                        //当用户的身份只有一种时直接进入后台
+                        if (result.roleSize == 1) {
+                            var roleId = result.roleList[0].id;
+                            $.post("/user/saveRole", {roleId: roleId}, function (result) {
+                                if (result.success) {
+                                    window.location.href = "/main.html";
+                                }
+                            });
+                        } else {
+                            $("#roleList").empty();
+                            var roles = result.roleList;
+                            for (var i = 0; i < roles.length; i++) {
+                                if (i == 0) {
+                                    //选择第一个单选框
+                                    $("#roleList").append("<input type='radio' checked=true name='role' value='" + roles[i].id + "'/>" + roles[i].name + "&nbsp;&nbsp;");
+                                } else {
+                                    $("#roleList").append("<input type='radio' name='role' value='" + roles[i].id + "'/>" + roles[i].name + "&nbsp;&nbsp;");
+                                }
+                                document.getElementById("light").style.display = "block";
+                                document.getElementById("fade").style.display = "block";
+                            }
+                        }
                     } else {
                         alert(result.errorInfo);
                     }
                 });
             });
         });
+
+        function saveRole() {
+            var roleId = $("input[name='role']:checked").val();
+            $.post("/user/saveRole", {roleId: roleId}, function (result) {
+                if (result.success) {
+                    window.location.href = "/main.html";
+                }
+            });
+        }
     </script>
 </head>
 <body>

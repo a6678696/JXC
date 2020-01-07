@@ -1,10 +1,16 @@
 package com.ledao.controller;
 
+import com.ledao.entity.Role;
 import com.ledao.entity.User;
+import com.ledao.service.RoleService;
+import com.ledao.service.UserService;
 import com.ledao.util.StringUtil;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -28,6 +34,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private RoleService roleService;
+
+    /**
+     * 用户登录判断
+     *
+     * @param imageCode
+     * @param user
+     * @param bindingResult
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/login")
     public Map<String, Object> login(String imageCode, @Valid User user, BindingResult bindingResult, HttpSession session) {
@@ -52,6 +73,12 @@ public class UserController {
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), user.getPassword());
         try {
             subject.login(token);
+            String userName = SecurityUtils.getSubject().getPrincipal().toString();
+            User currentUser = userService.findByUserName(userName);
+            session.setAttribute("currentUser", currentUser);
+            List<Role> roleList = roleService.findByUserId(currentUser.getId());
+            map.put("roleList", roleList);
+            map.put("roleSize", roleList.size());
             map.put("success", true);
             return map;
         } catch (Exception e) {
@@ -60,5 +87,22 @@ public class UserController {
             map.put("errorInfo", "用户名或密码错误!");
             return map;
         }
+    }
+
+    /**
+     * 保存角色信息
+     *
+     * @param roleId
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/saveRole")
+    public Map<String, Object> saveRole(Integer roleId, HttpSession session) {
+        Map<String, Object> map = new HashMap<>(16);
+        Role currentRole = roleService.findById(roleId);
+        session.setAttribute("currentRole", currentRole);
+        map.put("success", true);
+        return map;
     }
 }
