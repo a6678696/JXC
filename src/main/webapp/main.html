@@ -44,6 +44,14 @@
             window.setInterval("showTime()", 1000);
 
             $("#userInfo").load("/user/loadUserInfo"); // 加载用户信息
+
+            $("#tree").tree({
+                lines:true,
+                url:'/user/loadMenuInfo?parentId=-1',
+                onLoadSuccess:function(){
+                    $("#tree").tree("expandAll");
+                }
+            });
         });
     </script>
 </head>
@@ -66,10 +74,11 @@
 <div region="center">
 </div>
 
-<div region="west" style="width: 200px" title="导航菜单" split="true" iconCls="icon-navigation">
+<div region="west" style="width: 200px;background-color: #daeef5" title="导航菜单" split="true" iconCls="icon-navigation">
+    <ul id="tree" class="easyui-tree" style="padding: 10px"></ul>
 </div>
 
-<div region="south" style="height: 30px;padding: 5px" align="center">
+<div region="south" style="height: 30px;padding: 5px;background-color: #daeef5" align="center">
     Copyright © 1500330333ztl  版权所有
 </div>
 

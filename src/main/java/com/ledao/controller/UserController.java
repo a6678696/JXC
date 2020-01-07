@@ -1,7 +1,11 @@
 package com.ledao.controller;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.ledao.entity.Menu;
 import com.ledao.entity.Role;
 import com.ledao.entity.User;
+import com.ledao.service.MenuService;
 import com.ledao.service.RoleService;
 import com.ledao.service.UserService;
 import com.ledao.util.StringUtil;
@@ -19,6 +23,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +44,9 @@ public class UserController {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private MenuService menuService;
 
     /**
      * 用户登录判断
@@ -118,5 +126,75 @@ public class UserController {
         User currentUser = (User) session.getAttribute("currentUser");
         Role currentRole = (Role) session.getAttribute("currentRole");
         return "欢迎您:" + currentUser.getTrueName() + "&nbsp;[&nbsp;" + currentRole.getName() + "&nbsp;]";
+    }
+
+    /**
+     * 加载权限菜单
+     *
+     * @param session
+     * @param parentId
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @PostMapping("/loadMenuInfo")
+    public String loadMenuInfo(HttpSession session, Integer parentId) throws Exception {
+        Role currentRole = (Role) session.getAttribute("currentRole");
+        return getAllMenuByParentId(parentId, currentRole.getId()).toString();
+    }
+
+    /**
+     * 获取所有菜单信息
+     *
+     * @param parentId
+     * @param roleId
+     * @return
+     */
+    public JsonArray getAllMenuByParentId(Integer parentId, Integer roleId) {
+        JsonArray jsonArray = this.getMenuByParentId(parentId, roleId);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JsonObject jsonObject = (JsonObject) jsonArray.get(i);
+            if ("open".equals(jsonObject.get("state").getAsString())) {
+                continue;
+            } else {
+                jsonObject.add("children", getAllMenuByParentId(jsonObject.get("id").getAsInt(), roleId));
+            }
+        }
+        return jsonArray;
+    }
+
+    /**
+     * 根据父节点和用户角色Id查询菜单
+     *
+     * @param parentId
+     * @param roleId
+     * @return
+     */
+    public JsonArray getMenuByParentId(Integer parentId, Integer roleId) {
+        List<Menu> menuList = menuService.findByParentIdAndRoleId(parentId, roleId);
+        JsonArray jsonArray = new JsonArray();
+        for (Menu menu : menuList) {
+            JsonObject jsonObject = new JsonObject();
+            // 节点Id
+            jsonObject.addProperty("id", menu.getId());
+            // 节点名称
+            jsonObject.addProperty("text", menu.getName());
+            if (menu.getState() == 1) {
+                // 根节点
+                jsonObject.addProperty("state", "closed");
+            } else {
+                // 叶子节点
+                jsonObject.addProperty("state", "open");
+            }
+            // 节点图标
+            jsonObject.addProperty("iconCls", menu.getIcon());
+            // 扩展属性
+            JsonObject attributeObject = new JsonObject();
+            // 菜单请求地址
+            attributeObject.addProperty("url", menu.getUrl());
+            jsonObject.add("attributes", attributeObject);
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
 }
