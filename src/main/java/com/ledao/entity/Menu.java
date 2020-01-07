@@ -26,7 +26,7 @@ public class Menu implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
-     * 菜名名称
+     * 菜单名称
      */
     @Column(length = 50)
     private String name;
