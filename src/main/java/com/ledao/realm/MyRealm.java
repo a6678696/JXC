@@ -36,6 +36,7 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        String userName=token.getPrincipal().toString();
         return null;
     }
 }
