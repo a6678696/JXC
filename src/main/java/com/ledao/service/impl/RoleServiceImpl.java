@@ -24,12 +24,12 @@ public class RoleServiceImpl implements RoleService {
     /**
      * 根据用户id查角色集合
      *
-     * @param id
+     * @param userId
      * @return
      */
     @Override
-    public List<Role> findByUserId(Integer id) {
-        return roleRepository.findByUserId(id);
+    public List<Role> findByUserId(Integer userId) {
+        return roleRepository.findByUserId(userId);
     }
 
     /**

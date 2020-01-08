@@ -52,4 +52,10 @@ public class User implements Serializable {
      */
     @Column(length = 1000)
     private String remarks;
+
+    /**
+     * 所拥有的角色
+     */
+    @Transient
+    private String roles;
 }

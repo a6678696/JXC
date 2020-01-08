@@ -16,10 +16,10 @@ public interface RoleService {
     /**
      * 根据用户id查角色集合
      *
-     * @param id
+     * @param userId
      * @return
      */
-    List<Role> findByUserId(Integer id);
+    List<Role> findByUserId(Integer userId);
 
     /**
      * 根据roleId查询实体
