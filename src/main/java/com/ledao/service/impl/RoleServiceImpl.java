@@ -42,4 +42,14 @@ public class RoleServiceImpl implements RoleService {
     public Role findById(Integer roleId) {
         return roleRepository.findById(roleId).get();
     }
+
+    /**
+     * 查询所有角色信息
+     *
+     * @return
+     */
+    @Override
+    public List<Role> listAll() {
+        return roleRepository.findAll();
+    }
 }

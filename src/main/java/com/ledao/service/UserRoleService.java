@@ -1,5 +1,7 @@
 package com.ledao.service;
 
+import com.ledao.entity.UserRole;
+
 /**
  * 用户角色关联service接口
  *
@@ -15,4 +17,11 @@ public interface UserRoleService {
      * @param userId
      */
     void deleteByUserId(Integer userId);
+
+    /**
+     * 保存或修改用户角色关联
+     *
+     * @param userRole
+     */
+    void save(UserRole userRole);
 }

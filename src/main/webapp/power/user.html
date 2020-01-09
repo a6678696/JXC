@@ -13,7 +13,25 @@
         var url;
 
         function formatEdit(val, row) {
-            return "<a href=''><img src='/static/images/edit.gif' style='margin-top: 4px'></a>";
+            return "<a href=\"javascript:openRoleChooseDialog('"+row.roles+"',"+row.id+")\"><img src='/static/images/edit.gif' style='margin-top: 4px'></a>";
+        }
+
+        function openRoleChooseDialog(roles,userId) {
+            var rolesArr = roles.split(",");
+            $("#dlg2").dialog("open").dialog("setTitle", "选择角色");
+            $("#dg2").datagrid({
+                url:'/admin/role/listAll',
+                onLoadSuccess:function (data) {
+                    var allRows = $("#dg2").datagrid("getRows");
+                    for (var i = 0; i < allRows.length; i++) {
+                        var name = allRows[i].name;
+                        if ($.inArray(name, rolesArr) >= 0) {
+                            $("#dg2").datagrid("checkRow", i);
+                        }
+                    }
+                }
+            });
+            $("#userId").val(userId);
         }
 
         function searchUser() {
@@ -107,6 +125,28 @@
             });
 
         });
+
+        function saveRoleSet() {
+            var userId = $("#userId").val();
+            var selectedRows = $("#dg2").datagrid("getSelections");
+            var strRoleIds = [];
+            for(var i=0;i<selectedRows.length;i++){
+                strRoleIds.push(selectedRows[i].id);
+            }
+            var roleIds=strRoleIds.join(",")
+            $.post("/admin/user/saveRoleSet",{roleIds:roleIds,userId:userId},function(result){
+                if(result.success){
+                    closeRoleSetDialog();
+                    $("#dg").datagrid("reload");
+                }else{
+                    $.messager.alert("系统提示","提交失败，请联系管理员！");
+                }
+            },"json");
+        }
+
+        function closeRoleSetDialog() {
+            $("#dlg2").dialog("close");
+        }
     </script>
 </head>
 <body style="margin: 1px">
@@ -171,6 +211,23 @@
 <div id="dlg-buttons">
     <a href="javascript:saveUser()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:closeUserDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+<div id="dlg2" class="easyui-dialog" style="width: 500px;height: 350px;"
+     closed="true" buttons="#dlg-buttons2">
+    <input type="hidden" id="userId" name="userId"/>
+    <table id="dg2"  class="easyui-datagrid" fitColumns="true" fit="true">
+        <thead>
+        <th field="cb" checkbox="true" align="center"></th>
+        <th field="id" width="20" align="left" hidden="true">编号</th>
+        <th field="name" width="100" align="left">角色名称</th>
+        <th field="remarks" width="200" align="left">备注</th>
+        </thead>
+    </table>
+</div>
+
+<div id="dlg-buttons2">
+    <a href="javascript:saveRoleSet()" class="easyui-linkbutton" iconCls="icon-ok" >保存</a>
+    <a href="javascript:closeRoleSetDialog()" class="easyui-linkbutton" iconCls="icon-cancel" >关闭</a>
 </div>
 </body>
 </html>

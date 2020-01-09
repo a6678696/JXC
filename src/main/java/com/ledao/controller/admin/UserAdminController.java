@@ -2,9 +2,11 @@ package com.ledao.controller.admin;
 
 import com.ledao.entity.Role;
 import com.ledao.entity.User;
+import com.ledao.entity.UserRole;
 import com.ledao.service.RoleService;
 import com.ledao.service.UserRoleService;
 import com.ledao.service.UserService;
+import com.ledao.util.StringUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,6 +94,30 @@ public class UserAdminController {
         Map<String, Object> resultMap = new HashMap<>(16);
         userRoleService.deleteByUserId(id);
         userService.delete(id);
+        resultMap.put("success", true);
+        return resultMap;
+    }
+
+    /**
+     * 保存用户角色设置(先删除原来的再添加新的)
+     *
+     * @param roleIds
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/saveRoleSet")
+    public Map<String, Object> saveRoleSet(String roleIds, Integer userId) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        userRoleService.deleteByUserId(userId);
+        if (StringUtil.isNotEmpty(roleIds)) {
+            String[] roleIdStr = roleIds.split(",");
+            for (int i = 0; i < roleIdStr.length; i++) {
+                UserRole userRole = new UserRole();
+                userRole.setUser(userService.findById(userId));
+                userRole.setRole(roleService.findById(Integer.parseInt(roleIdStr[i])));
+                userRoleService.save(userRole);
+            }
+        }
         resultMap.put("success", true);
         return resultMap;
     }

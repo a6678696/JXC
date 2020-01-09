@@ -112,4 +112,15 @@ public class UserServiceImpl implements UserService {
     public void delete(Integer userId) {
         userRepository.deleteById(userId);
     }
+
+    /**
+     * 根据id查询实体
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public User findById(Integer userId) {
+        return userRepository.findById(userId).get();
+    }
 }

@@ -28,4 +28,11 @@ public interface RoleService {
      * @return
      */
     Role findById(Integer roleId);
+
+    /**
+     * 查询所有角色信息
+     *
+     * @return
+     */
+    List<Role> listAll();
 }

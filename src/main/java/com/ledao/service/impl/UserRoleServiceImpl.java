@@ -1,5 +1,6 @@
 package com.ledao.service.impl;
 
+import com.ledao.entity.UserRole;
 import com.ledao.repository.UserRoleRepository;
 import com.ledao.service.UserRoleService;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,15 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public void deleteByUserId(Integer userId) {
         userRoleRepository.deleteByUserId(userId);
+    }
+
+    /**
+     * 保存或修改用户角色关联
+     *
+     * @param userRole
+     */
+    @Override
+    public void save(UserRole userRole) {
+        userRoleRepository.save(userRole);
     }
 }
