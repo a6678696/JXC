@@ -94,18 +94,18 @@ public class RoleAdminController {
     /**
      * 删除角色信息
      *
-     * @param roleId
+     * @param id
      * @return
      * @throws Exception
      */
     @RequestMapping("/delete")
     @RequiresPermissions(value = "角色管理")
-    public Map<String, Object> delete(Integer roleId) {
+    public Map<String, Object> delete(Integer id) {
         Map<String, Object> resultMap = new HashMap<>(16);
-        roleMenuService.deleteByRoleId(roleId);
-        userRoleService.deleteByRoleId(roleId);
-        roleService.delete(roleId);
-        resultMap.put("success", false);
+        roleMenuService.deleteByRoleId(id);
+        userRoleService.deleteByRoleId(id);
+        roleService.delete(id);
+        resultMap.put("success", true);
         return resultMap;
     }
 }
