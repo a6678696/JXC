@@ -20,7 +20,16 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Integer>, Jp
      *
      * @param userId
      */
-    @Query(value="delete from t_user_role where user_id=?1",nativeQuery=true)
+    @Query(value = "delete from t_user_role where user_id=?1", nativeQuery = true)
     @Modifying
     void deleteByUserId(Integer userId);
+
+    /**
+     * 根据角色id删除所有关联信息
+     *
+     * @param roleId
+     */
+    @Query(nativeQuery = true,value = "delete from t_user_role where role_id=?1")
+    @Modifying
+    void deleteByRoleId(Integer roleId);
 }

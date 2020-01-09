@@ -41,4 +41,14 @@ public class UserRoleServiceImpl implements UserRoleService {
     public void save(UserRole userRole) {
         userRoleRepository.save(userRole);
     }
+
+    /**
+     * 根据角色id删除所有关联信息
+     *
+     * @param roleId
+     */
+    @Override
+    public void deleteByRoleId(Integer roleId) {
+        userRoleRepository.deleteByRoleId(roleId);
+    }
 }

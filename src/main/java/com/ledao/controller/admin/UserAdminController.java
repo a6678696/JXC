@@ -7,6 +7,7 @@ import com.ledao.service.RoleService;
 import com.ledao.service.UserRoleService;
 import com.ledao.service.UserService;
 import com.ledao.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -106,6 +107,7 @@ public class UserAdminController {
      * @return
      */
     @RequestMapping("/saveRoleSet")
+    @RequiresPermissions(value = "用户管理")
     public Map<String, Object> saveRoleSet(String roleIds, Integer userId) {
         Map<String, Object> resultMap = new HashMap<>(16);
         userRoleService.deleteByUserId(userId);

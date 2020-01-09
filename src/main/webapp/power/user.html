@@ -136,10 +136,11 @@
             var roleIds=strRoleIds.join(",")
             $.post("/admin/user/saveRoleSet",{roleIds:roleIds,userId:userId},function(result){
                 if(result.success){
+                    $.messager.alert("系统提示", "修改成功!");
                     closeRoleSetDialog();
                     $("#dg").datagrid("reload");
                 }else{
-                    $.messager.alert("系统提示","提交失败，请联系管理员！");
+                    $.messager.alert("系统提示","修改失败，请联系管理员!");
                 }
             },"json");
         }
@@ -175,7 +176,7 @@
         <a href="javascript:searchUser()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>
 </div>
-<div id="dlg" class="easyui-dialog" style="width: 500px;height: 380px;padding: 10px 20px"
+<div id="dlg" class="easyui-dialog" style="width: 500px;height: 310px;padding: 10px 20px"
      closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
     <form id="fm" method="post">
         <table cellspacing="8px">
