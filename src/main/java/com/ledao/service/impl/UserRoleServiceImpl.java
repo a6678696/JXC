@@ -1,0 +1,33 @@
+package com.ledao.service.impl;
+
+import com.ledao.repository.UserRoleRepository;
+import com.ledao.service.UserRoleService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
+/**
+ * 用户角色关联Service实现类
+ *
+ * @author LeDao
+ * @company
+ * @create 2020-01-08 22:35
+ */
+@Service("userRoleService")
+@Transactional(rollbackFor = Exception.class)
+public class UserRoleServiceImpl implements UserRoleService {
+
+    @Resource
+    private UserRoleRepository userRoleRepository;
+
+    /**
+     * 根据用户id删除所有关联信息
+     *
+     * @param userId
+     */
+    @Override
+    public void deleteByUserId(Integer userId) {
+        userRoleRepository.deleteByUserId(userId);
+    }
+}

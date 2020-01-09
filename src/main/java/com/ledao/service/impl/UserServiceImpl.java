@@ -52,14 +52,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> list(User user, Integer page, Integer pageSize) {
-        Pageable pageable=PageRequest.of(page-1, pageSize, Sort.Direction.ASC,"id");
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.Direction.ASC, "id");
         Page<User> userPage = userRepository.findAll(new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
                 if (user != null) {
                     if (StringUtil.isNotEmpty(user.getUserName())) {
-                        predicate.getExpressions().add(criteriaBuilder.like(root.get("userName"),"%" + user.getUserName() + "%"));
+                        predicate.getExpressions().add(criteriaBuilder.like(root.get("userName"), "%" + user.getUserName() + "%"));
                     }
                     predicate.getExpressions().add(criteriaBuilder.notEqual(root.get("id"), 1));
                 }
@@ -77,13 +77,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Long getCount(User user) {
-        Long count=userRepository.count(new Specification<User>() {
+        Long count = userRepository.count(new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
                 if (user != null) {
                     if (StringUtil.isNotEmpty(user.getUserName())) {
-                        predicate.getExpressions().add(criteriaBuilder.like(root.get("userName"),"%" + user.getUserName() + "%"));
+                        predicate.getExpressions().add(criteriaBuilder.like(root.get("userName"), "%" + user.getUserName() + "%"));
                     }
                     predicate.getExpressions().add(criteriaBuilder.notEqual(root.get("id"), 1));
                 }
@@ -91,5 +91,25 @@ public class UserServiceImpl implements UserService {
             }
         });
         return count;
+    }
+
+    /**
+     * 添加或者修改用户信息
+     *
+     * @param user
+     */
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    /**
+     * 根据id删除用户
+     *
+     * @param userId
+     */
+    @Override
+    public void delete(Integer userId) {
+        userRepository.deleteById(userId);
     }
 }

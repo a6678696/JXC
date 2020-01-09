@@ -39,4 +39,18 @@ public interface UserService {
      * @return
      */
     Long getCount(User user);
+
+    /**
+     * 添加或者修改用户信息
+     *
+     * @param user
+     */
+    void save(User user);
+
+    /**
+     * 根据id删除用户
+     *
+     * @param userId
+     */
+    void delete(Integer userId);
 }
