@@ -1,7 +1,6 @@
 package com.ledao.controller.admin;
 
 import com.ledao.entity.Role;
-import com.ledao.repository.RoleRepository;
 import com.ledao.service.RoleMenuService;
 import com.ledao.service.RoleService;
 import com.ledao.service.UserRoleService;
@@ -59,7 +58,7 @@ public class RoleAdminController {
      */
     @RequestMapping("/list")
     @RequiresPermissions(value = "角色管理")
-    public Map<String, Object> list(Role searchRole, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
+    public Map<String, Object> list(Role searchRole, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows",required = false)Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
         List<Role> roleList = roleService.list(searchRole, page, rows);
         Long total = roleService.getCount(searchRole);
@@ -108,4 +107,5 @@ public class RoleAdminController {
         resultMap.put("success", true);
         return resultMap;
     }
+
 }
