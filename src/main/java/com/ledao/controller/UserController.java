@@ -2,22 +2,15 @@ package com.ledao.controller;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.ledao.entity.Log;
 import com.ledao.entity.Menu;
 import com.ledao.entity.Role;
 import com.ledao.entity.User;
+import com.ledao.service.LogService;
 import com.ledao.service.MenuService;
 import com.ledao.service.RoleService;
 import com.ledao.service.UserService;
 import com.ledao.util.StringUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -26,7 +19,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Controller
@@ -47,6 +46,9 @@ public class UserController{
 
     @Resource
     private MenuService menuService;
+
+    @Resource
+    private LogService logService;
 
     /**
      * 用户登录判断
@@ -88,6 +90,7 @@ public class UserController{
             map.put("roleList", roleList);
             map.put("roleSize", roleList.size());
             map.put("success", true);
+            logService.save(new Log(Log.LOGIN_ACTION,"用户登录"));
             return map;
         } catch (Exception e) {
             e.printStackTrace();

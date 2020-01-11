@@ -12,11 +12,11 @@
         var url;
 
         function formatEdit(val,row){
-            return "<a href=''><img style='margin-top:4px' src='/static/images/edit.gif'/></a>";
+            return "<a href=\"javascript:openMenuSetDialog("+row.id+")\"><img style='margin-top:4px' src='/static/images/edit.gif'/></a>";
         }
 
         function searchRole() {
-            $("#dg").datagrid('load',{
+            $("#dg").datagrid('load', {
                 "name": $("#s_roleName").val()
             });
         }
@@ -30,16 +30,16 @@
             $("#dlg").dialog("close");
             resetValue();
         }
-        
+
         function openRoleAddDialog() {
             $("#dlg").dialog("open").dialog("setTitle", "添加角色信息");
             url = "/admin/role/save";
         }
-        
+
         function openRoleModifyDialog() {
             var selectedRows = $("#dg").datagrid("getSelections");
             if (selectedRows.length != 1) {
-                $.messager.alert("系统提示","请选择一条要修改的数据！");
+                $.messager.alert("系统提示", "请选择一条要修改的数据！");
                 return;
             }
             var row = selectedRows[0];
@@ -48,58 +48,107 @@
             url = "/admin/role/save?id=" + row.id;
         }
 
-        function saveRole(){
-            $("#fm").form("submit",{
-                url:url,
-                onSubmit:function(){
+        function saveRole() {
+            $("#fm").form("submit", {
+                url: url,
+                onSubmit: function () {
                     return $(this).form("validate");
                 },
-                success:function(result){
-                    var result=eval('('+result+')');
-                    if(result.success){
-                        $.messager.alert("系统提示","保存成功！");
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.success) {
+                        $.messager.alert("系统提示", "保存成功！");
                         resetValue();
                         $("#dlg").dialog("close");
                         $("#dg").datagrid("reload");
-                    }else{
-                        $.messager.alert("系统提示",result.errorInfo);
+                    } else {
+                        $.messager.alert("系统提示", result.errorInfo);
                     }
                 }
             });
         }
 
-        function deleteRole(){
-            var selectedRows=$("#dg").datagrid("getSelections");
-            if(selectedRows.length!=1){
-                $.messager.alert("系统提示","请选择一条要删除的数据！");
+        function deleteRole() {
+            var selectedRows = $("#dg").datagrid("getSelections");
+            if (selectedRows.length != 1) {
+                $.messager.alert("系统提示", "请选择一条要删除的数据！");
                 return;
             }
-            var id=selectedRows[0].id;
-            $.messager.confirm("系统提示","您确定要删除这条数据吗?",function(r){
-                if(r){
-                    $.post("/admin/role/delete",{id:id},function(result){
-                        if(result.success){
-                            $.messager.alert("系统提示","数据已成功删除！");
+            var id = selectedRows[0].id;
+            $.messager.confirm("系统提示", "您确定要删除这条数据吗?", function (r) {
+                if (r) {
+                    $.post("/admin/role/delete", {id: id}, function (result) {
+                        if (result.success) {
+                            $.messager.alert("系统提示", "数据已成功删除！");
                             $("#dg").datagrid("reload");
-                        }else{
-                            $.messager.alert("系统提示",result.errorInfo);
+                        } else {
+                            $.messager.alert("系统提示", result.errorInfo);
                         }
-                    },"json");
+                    }, "json");
                 }
             });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             $("#dg").datagrid({
-                onDblClickRow:function(index,row){
-                    $("#dlg").dialog("open").dialog("setTitle","修改角色信息");
-                    $("#fm").form("load",row);
-                    url="/admin/role/save?id="+row.id;
+                onDblClickRow: function (index, row) {
+                    $("#dlg").dialog("open").dialog("setTitle", "修改角色信息");
+                    $("#fm").form("load", row);
+                    url = "/admin/role/save?id=" + row.id;
                 }
             });
 
         });
+
+        function openMenuSetDialog(roleId){
+            $("#dlg2").dialog("open").dialog("setTitle","权限菜单设置");
+            $("#menuTree").tree({
+                lines:true,
+                checkbox:true,
+                cascadeCheck:false,
+                url:'/admin/role/loadCheckMenuInfo?parentId=-1&roleId='+roleId,
+                onLoadSuccess:function(){
+                    $("#menuTree").tree("expandAll");
+                },
+                onCheck:function(node,checked){
+                    if(checked){
+                        checkNode($("#menuTree").tree("getParent",node.target));
+                    }
+                }
+            });
+            $("#roleId").val(roleId);
+        }
+
+        function checkNode(node){
+            if(!node){
+                return;
+            }else{
+                checkNode($("#menuTree").tree("getParent",node.target));
+                $("#menuTree").tree("check",node.target);
+            }
+        }
+
+        function saveMenuSet(){
+            var roleId=$("#roleId").val();
+            var nodes=$("#menuTree").tree("getChecked");
+            var menuArrIds=[];
+            for(var i=0;i<nodes.length;i++){
+                menuArrIds.push(nodes[i].id);
+            }
+            var menuIds=menuArrIds.join(",");
+            $.post("/admin/role/saveMenuSet",{menuIds:menuIds,roleId:roleId},function(result){
+                if(result.success){
+                    closeMenuSetDialog();
+                }else{
+                    $.messager.alert("系统提示","提交失败，请联系管理员");
+                }
+            },"json");
+        }
+
+        function closeMenuSetDialog(){
+            $("#dlg2").dialog("close");
+        }
     </script>
 </head>
 <body style="margin: 1px">
@@ -146,10 +195,18 @@
         </table>
     </form>
 </div>
-
 <div id="dlg-buttons">
-    <a href="javascript:saveRole()" class="easyui-linkbutton" iconCls="icon-ok" >保存</a>
-    <a href="javascript:closeRoleDialog()" class="easyui-linkbutton" iconCls="icon-cancel" >关闭</a>
+    <a href="javascript:saveRole()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeRoleDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+</div>
+<div id="dlg2" class="easyui-dialog" style="width: 300px;height: 500px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons2">
+    <input type="hidden" id="roleId" name="roleId"/>
+    <ul id="menuTree" class="easyui-tree"></ul>
+</div>
+<div id="dlg-buttons2">
+    <a href="javascript:saveMenuSet()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeMenuSetDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 </body>
 </html>

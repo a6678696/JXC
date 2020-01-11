@@ -1,5 +1,6 @@
 package com.ledao.service.impl;
 
+import com.ledao.entity.RoleMenu;
 import com.ledao.repository.RoleMenuRepository;
 import com.ledao.service.RoleMenuService;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,18 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     @Resource
     private RoleMenuRepository roleMenuRepository;
 
+    /**
+     * 根据角色id删除所有关联信息
+     *
+     * @param roleId
+     */
     @Override
     public void deleteByRoleId(Integer roleId) {
         roleMenuRepository.deleteByRoleId(roleId);
+    }
+
+    @Override
+    public void save(RoleMenu roleMenu) {
+        roleMenuRepository.save(roleMenu);
     }
 }
