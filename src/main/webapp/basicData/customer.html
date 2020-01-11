@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>供应商管理</title>
+    <title>客户管理</title>
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
@@ -11,7 +11,7 @@
     <script type="text/javascript">
         var url;
 
-        function searchSupplier() {
+        function searchCustomer() {
             $("#dg").datagrid('load', {
                 "name": $("#s_name").val()
             });
@@ -25,23 +25,23 @@
             $("#remarks").val("");
         }
 
-        function openSupplierAddDialog() {
-            $("#dlg").dialog("open").dialog("setTitle", "添加供应商信息");
-            url = "/admin/supplier/save";
+        function openCustomerAddDialog() {
+            $("#dlg").dialog("open").dialog("setTitle", "添加客户信息");
+            url = "/admin/customer/save";
         }
 
-        function openSupplierModifyDialog() {
+        function openCustomerModifyDialog() {
             var selectedRows = $("#dg").datagrid("getSelections");
             if (selectedRows.length != 1) {
                 $.messager.alert("系统提示", "请选择一条要修改的数据!");
             }
             var row = selectedRows[0];
-            $("#dlg").dialog("open").dialog("setTitle", "修改供应商信息");
+            $("#dlg").dialog("open").dialog("setTitle", "修改客户信息");
             $("#fm").form("load", row);
-            url = "/admin/supplier/save?id=" + row.id;
+            url = "/admin/customer/save?id=" + row.id;
         }
 
-        function saveSupplier() {
+        function saveCustomer() {
             $("#fm").form("submit", {
                 url: url,
                 onSubmit: function () {
@@ -61,7 +61,7 @@
             });
         }
 
-        function deleteSupplier() {
+        function deleteCustomer() {
             var selectedRows=$("#dg").datagrid("getSelections");
             if(selectedRows.length==0){
                 $.messager.alert("系统提示","请选择要删除的数据！");
@@ -74,19 +74,19 @@
             var ids = strIds.join(",");
             $.messager.confirm("系统提示","您确定要删除这<span style='color: red'>"+selectedRows.length+"</span>条数据吗?",function (r) {
                 if (r) {
-                    $.post("/admin/supplier/delete",{ids:ids},function (result) {
+                    $.post("/admin/customer/delete",{ids:ids},function (result) {
                         if(result.success){
-                            $.messager.alert("系统提示","数据已成功删除！");
+                            $.messager.alert("系统提示","数据已成功删除!");
                             $("#dg").datagrid("reload");
                         }else{
-                            $.messager.alert("系统提示","供应商删除失败!");
+                            $.messager.alert("系统提示","数据删除失败!");
                         }
                     },"json");
                 }
             });
         }
 
-        function closeSupplierDialog() {
+        function closeCustomerDialog() {
             $("#dlg").dialog("close");
             resetValue();
         }
@@ -95,9 +95,9 @@
 
             $("#dg").datagrid({
                 onDblClickRow:function(index,row){
-                    $("#dlg").dialog("open").dialog("setTitle","修改供应商信息");
+                    $("#dlg").dialog("open").dialog("setTitle","修改客户信息");
                     $("#fm").form("load",row);
-                    url="/admin/supplier/save?id="+row.id;
+                    url="/admin/customer/save?id="+row.id;
                 }
             });
 
@@ -105,12 +105,13 @@
     </script>
 </head>
 <body style="margin: 1px">
-<table id="dg" title="供应商管理" class="easyui-datagrid" fitcolumns="true" pagination="true" rownumbers="true"
-       url="/admin/supplier/list" fit="true" toolbar="#tb">
+<table id="dg" title="客户管理" class="easyui-datagrid"
+       fitColumns="true" pagination="true" rownumbers="true"
+       url="/admin/customer/list" fit="true" toolbar="#tb">
     <thead>
     <th field="cb" checkbox="true" align="center"></th>
     <th field="id" width="20" align="center">编号</th>
-    <th field="name" width="100" align="center">供应商名称</th>
+    <th field="name" width="100" align="center">客户名称</th>
     <th field="contact" width="50" align="center">联系人</th>
     <th field="number" width="50" align="center">联系电话</th>
     <th field="address" width="150" align="center">联系地址</th>
@@ -119,22 +120,22 @@
 </table>
 <div id="tb">
     <div>
-        <a href="javascript:openSupplierAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-        <a href="javascript:openSupplierModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
+        <a href="javascript:openCustomerAddDialog()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+        <a href="javascript:openCustomerModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
            plain="true">修改</a>
-        <a href="javascript:deleteSupplier()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        <a href="javascript:deleteCustomer()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
     </div>
     <div>
-        &nbsp;供应商名称：&nbsp;<input type="text" id="s_name" size="20" onkeydown="if(event.keyCode==13) searchSupplier()"/>
-        <a href="javascript:searchSupplier()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+        &nbsp;客户名称：&nbsp;<input type="text" id="s_name" size="20" onkeydown="if(event.keyCode==13) searchCustomer()"/>
+        <a href="javascript:searchCustomer()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
     </div>
 </div>
-<div id="dlg" class="easyui-dialog" style="width: 500px;height: 350px;padding: 10px 20px" closed="true"
-     buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
+<div id="dlg" class="easyui-dialog" style="width: 500px;height: 350px;padding: 10px 20px"
+     closed="true" buttons="#dlg-buttons" data-options="onClose:function(){resetValue()}">
     <form id="fm" method="post">
         <table cellspacing="8px">
             <tr>
-                <td>供应商名称：</td>
+                <td>客户名称：</td>
                 <td>
                     <input type="text" id="name" name="name" class="easyui-validatebox" required="true"
                            style="width: 250px"/>
@@ -170,9 +171,10 @@
         </table>
     </form>
 </div>
+
 <div id="dlg-buttons">
-    <a href="javascript:saveSupplier()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-    <a href="javascript:closeSupplierDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+    <a href="javascript:saveCustomer()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:closeCustomerDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 </div>
 </body>
 </html>
