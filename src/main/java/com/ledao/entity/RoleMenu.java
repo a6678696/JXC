@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @Entity
-@Table(name = "t_roleMenu")
+@Table(name = "t_role_menu")
 public class RoleMenu implements Serializable {
 
     private static final long serialVersionUID = 3476991653490999782L;
@@ -29,12 +29,12 @@ public class RoleMenu implements Serializable {
      * 角色
      */
     @ManyToOne
-    @JoinColumn(name = "roleId")
+    @JoinColumn(name = "role_id")
     private Role role;
     /**
      * 菜单
      */
     @ManyToOne
-    @JoinColumn(name = "menuId")
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 }

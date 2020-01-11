@@ -9,12 +9,16 @@ import com.ledao.service.RoleService;
 import com.ledao.service.UserRoleService;
 import com.ledao.service.UserService;
 import com.ledao.util.StringUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,7 @@ import java.util.Map;
  * @company
  * @create 2020-01-08 21:17
  */
-@RestController
+@Controller
 @RequestMapping("/admin/user")
 public class UserAdminController {
 
@@ -48,6 +52,7 @@ public class UserAdminController {
      * @param rows
      * @return
      */
+    @ResponseBody
     @RequestMapping("/list")
     public Map<String, Object> list(User searchUser, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
@@ -64,7 +69,7 @@ public class UserAdminController {
         Long total = userService.getCount(searchUser);
         resultMap.put("rows", userList);
         resultMap.put("total", total);
-        logService.save(new Log(Log.SEARCH_ACTION,"查询用户信息"));
+        logService.save(new Log(Log.SEARCH_ACTION, "查询用户信息"));
         return resultMap;
     }
 
@@ -74,6 +79,7 @@ public class UserAdminController {
      * @param user
      * @return
      */
+    @ResponseBody
     @RequestMapping("/save")
     public Map<String, Object> save(User user) {
         Map<String, Object> resultMap = new HashMap<>(16);
@@ -85,10 +91,10 @@ public class UserAdminController {
                 return resultMap;
             }
         }
-        if(user.getId()!=null){
-            logService.save(new Log(Log.UPDATE_ACTION,"更新用户信息"+user));
-        }else{
-            logService.save(new Log(Log.ADD_ACTION,"添加用户信息"+user));
+        if (user.getId() != null) {
+            logService.save(new Log(Log.UPDATE_ACTION, "更新用户信息" + user));
+        } else {
+            logService.save(new Log(Log.ADD_ACTION, "添加用户信息" + user));
         }
         userService.save(user);
         resultMap.put("success", true);
@@ -101,9 +107,10 @@ public class UserAdminController {
      * @param id
      * @return
      */
+    @ResponseBody
     @RequestMapping("/delete")
     public Map<String, Object> delete(Integer id) {
-        logService.save(new Log(Log.DELETE_ACTION,"删除用户信息"+userService.findById(id)));
+        logService.save(new Log(Log.DELETE_ACTION, "删除用户信息" + userService.findById(id)));
         Map<String, Object> resultMap = new HashMap<>(16);
         userRoleService.deleteByUserId(id);
         userService.delete(id);
@@ -118,6 +125,7 @@ public class UserAdminController {
      * @param userId
      * @return
      */
+    @ResponseBody
     @RequestMapping("/saveRoleSet")
     @RequiresPermissions(value = "用户管理")
     public Map<String, Object> saveRoleSet(String roleIds, Integer userId) {
@@ -133,7 +141,41 @@ public class UserAdminController {
             }
         }
         resultMap.put("success", true);
-        logService.save(new Log(Log.UPDATE_ACTION,"保存用户角色设置"));
+        logService.save(new Log(Log.UPDATE_ACTION, "保存用户角色设置"));
         return resultMap;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param newPassword
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/modifyPassword")
+    @RequiresPermissions(value = "修改密码")
+    public Map<String, Object> modifyPassword(String newPassword, HttpSession session) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        User currentUser = (User) session.getAttribute("currentUser");
+        User user = userService.findById(currentUser.getId());
+        user.setPassword(newPassword);
+        userService.save(user);
+        resultMap.put("success", true);
+        logService.save(new Log(Log.UPDATE_ACTION, "修改密码"));
+        return resultMap;
+    }
+
+    /**
+     * 安全退出
+     *
+     * @return
+     */
+    @GetMapping("/logout")
+    @RequiresPermissions(value = "安全退出")
+    public String logout(){
+        logService.save(new Log(Log.LOGOUT_ACTION, "用户注销"));
+        SecurityUtils.getSubject().logout();
+        return "redirect:/login.html";
     }
 }

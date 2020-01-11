@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @Entity
-@Table(name = "t_userRole")
+@Table(name = "t_user_role")
 public class UserRole implements Serializable {
 
     private static final long serialVersionUID = -7161756798700931249L;
@@ -30,13 +30,13 @@ public class UserRole implements Serializable {
      * 用户
      */
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     /**
      * 角色
      */
     @ManyToOne
-    @JoinColumn(name = "roleId")
+    @JoinColumn(name = "role_id")
     private Role role;
 }
