@@ -1,5 +1,7 @@
 package com.ledao.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ledao.util.CustomDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -39,7 +41,7 @@ public class Log {
      * 操作用户
      */
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
     /**
      * 操作内容
@@ -52,6 +54,18 @@ public class Log {
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
+    /**
+     *起始时间 搜索用到
+     */
+    @Transient
+    private Date bTime;
+
+    /**
+     * 结束时间 搜索用到
+     */
+    @Transient
+    private Date eTime;
+
     public Log(String type, String content) {
         this.type = type;
         this.content = content;
@@ -59,5 +73,10 @@ public class Log {
 
     public Log() {
 
+    }
+
+    @JsonSerialize(using= CustomDateTimeSerializer.class)
+    public Date getTime() {
+        return time;
     }
 }
