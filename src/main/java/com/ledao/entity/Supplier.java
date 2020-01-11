@@ -47,4 +47,14 @@ public class Supplier {
      */
     @Column(length = 1000)
     private String remarks;
+
+    @Override
+    public String toString() {
+        return "Supplier{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", contact='" + contact + '\'' +
+                ", number='" + number + '\'' +
+                '}';
+    }
 }

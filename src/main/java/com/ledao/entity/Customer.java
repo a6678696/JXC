@@ -45,4 +45,14 @@ public class Customer {
      */
     @Column(length = 1000)
     private String remarks;
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", contact='" + contact + '\'' +
+                ", number='" + number + '\'' +
+                '}';
+    }
 }

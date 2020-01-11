@@ -46,7 +46,7 @@ public class Log {
     /**
      * 操作内容
      */
-    @Column(length = 100)
+    @Column(length = 200)
     private String content;
     /**
      * 操作日期时间
