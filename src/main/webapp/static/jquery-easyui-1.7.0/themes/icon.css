@@ -121,6 +121,18 @@
 .icon-folder{
 	background:url('usericons/folder.gif') no-repeat center center;
 }
+.icon-clothes{
+	background:url('usericons/clothes.png') no-repeat center center;
+}
+.icon-fridge{
+	background:url('usericons/cat_fridge.png') no-repeat center center;
+}
+.icon-food{
+	background:url('usericons/food.png') no-repeat center center;
+}
+.icon-camera{
+	background:url('usericons/Camera.png') no-repeat center center;
+}
 
 
 .icon-refresh{

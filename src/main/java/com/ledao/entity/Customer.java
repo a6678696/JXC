@@ -48,11 +48,11 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", contact='" + contact + '\'' +
-                ", number='" + number + '\'' +
+        return "--{" +
+                "编号=" + id +
+                ", 名称='" + name + '\'' +
+                ", 联系人='" + contact + '\'' +
+                ", 联系电话='" + number + '\'' +
                 '}';
     }
 }
