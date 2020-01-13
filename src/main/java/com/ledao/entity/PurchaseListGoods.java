@@ -13,20 +13,20 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "t_purchaseListGoods")
+@Table(name = "t_purchase_list_goods")
 public class PurchaseListGoods {
 
     /**
      * 编号
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
      * 进货单
      */
     @ManyToOne
-    @JoinColumn(name = "purchaseListId")
+    @JoinColumn(name = "purchase_list_id")
     private PurchaseList purchaseList;
     /**
      * 商品编码
@@ -47,7 +47,7 @@ public class PurchaseListGoods {
      * 商品类别
      */
     @ManyToOne
-    @JoinColumn(name = "typeId")
+    @JoinColumn(name = "type_id")
     private GoodsType type;
     /**
      * 商品id

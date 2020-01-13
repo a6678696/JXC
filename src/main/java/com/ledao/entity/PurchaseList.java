@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "t_purchaseList")
+@Table(name = "t_purchase_list")
 public class PurchaseList {
 
     /**
@@ -32,7 +32,7 @@ public class PurchaseList {
      * 供应商
      */
     @ManyToOne
-    @JoinColumn(name = "supplierId")
+    @JoinColumn(name = "supplier_id")
     private Supplier supplier;
     /**
      * 进货日期
@@ -55,7 +55,7 @@ public class PurchaseList {
      * 操作用户
      */
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
     /**
      * 备注
