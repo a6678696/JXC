@@ -14,6 +14,14 @@ import java.util.List;
 public interface SupplierService {
 
     /**
+     * 根据名称模糊查询供应商信息
+     *
+     * @param name
+     * @return
+     */
+    List<Supplier> findByName(String name);
+
+    /**
      * 根据条件分页查询供应商信息
      *
      * @param supplier

@@ -32,6 +32,17 @@ public class SupplierServiceImpl implements SupplierService {
     private SupplierRepository supplierRepository;
 
     /**
+     * 根据名称模糊查询供应商信息
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Supplier> findByName(String name) {
+        return supplierRepository.findByName(name);
+    }
+
+    /**
      * 根据条件分页查询供应商信息
      *
      * @param supplier
@@ -41,7 +52,7 @@ public class SupplierServiceImpl implements SupplierService {
      */
     @Override
     public List<Supplier> list(Supplier supplier, Integer page, Integer pageSize) {
-        Pageable pageable = PageRequest.of(page-1, pageSize, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.Direction.ASC, "id");
         Page<Supplier> supplierPage = supplierRepository.findAll(new Specification<Supplier>() {
             @Override
             public Predicate toPredicate(Root<Supplier> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {

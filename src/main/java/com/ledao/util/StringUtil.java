@@ -36,4 +36,19 @@ public class StringUtil {
             return false;
         }
     }
+
+    public static String formatCode(String code) {
+        int length = code.length();
+        Integer num = Integer.parseInt(code.substring(length-4,length))+1;
+        StringBuffer codeNum = new StringBuffer(num+"");
+        int codeLength = codeNum.length();
+        for (int i = 4; i > codeLength; i--) {
+            codeNum.insert(0, "0");
+        }
+        return codeNum.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(formatCode("JH201712010002"));
+    }
 }

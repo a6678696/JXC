@@ -1,8 +1,7 @@
 
 function genTodayStr(){
 	var date = new Date();
-	var month=(date.getMonth()+1)<10?"0"+(date.getMonth()+1):(date.getMonth()+1);
-	return date.getFullYear()+"-"+formatZero(month)+"-"+formatZero(date.getDate());
+	return date.getFullYear()+"-"+formatZero(date.getMonth()+1)+"-"+formatZero(date.getDate());
 }
 
 function genLastYearStr(){

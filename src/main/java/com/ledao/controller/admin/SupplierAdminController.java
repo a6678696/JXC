@@ -32,6 +32,21 @@ public class SupplierAdminController {
     private LogService logService;
 
     /**
+     * 下拉框模糊查询
+     *
+     * @param q
+     * @return
+     */
+    @RequestMapping("/comboList")
+    @RequiresPermissions(value = "进货入库")
+    public List<Supplier> comboList(String q) {
+        if (q == null) {
+            q = "";
+        }
+        return supplierService.findByName("%" + q + "%");
+    }
+
+    /**
      * 分页查询供应商信息
      *
      * @param searchSupplier

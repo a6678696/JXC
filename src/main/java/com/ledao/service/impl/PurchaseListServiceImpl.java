@@ -18,4 +18,14 @@ public class PurchaseListServiceImpl implements PurchaseListService {
 
     @Resource
     private PurchaseListRepository purchaseListRepository;
+
+    /**
+     * 获取当天最大进货单号
+     *
+     * @return
+     */
+    @Override
+    public String getTodayMaxPurchaseNumber() {
+        return purchaseListRepository.getTodayMaxPurchaseNumber();
+    }
 }

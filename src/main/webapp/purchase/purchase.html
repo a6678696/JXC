@@ -8,17 +8,33 @@
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/static/js/date.js"></script>
+    <script type="text/javascript">
+        var url;
+        $(document).ready(function () {
+            $("#supplierId").combobox({
+                mode: 'remote',
+                url: '/admin/supplier/comboList',
+                valueField: 'id',
+                textField: 'name',
+                delay: 100
+            });
+            $("#purchaseDate").datebox("setValue", genTodayStr());
+            $("#purchaseNumber").load("/admin/purchaseList/genCode");
+        });
+    </script>
 </head>
 <body class="easyui-layout">
 <div data-options="region:'north'" style="height: 145px;border: 0px;padding-top: 20px">
     <fieldset style="border-color: #E7F0FF">
-        <legend>单号</legend>
+        <legend>单号:<span id="purchaseNumber"></span></legend>
         <form id="fm" method="post">
             <table cellspacing="8px">
                 <tr>
                     <td>
                         供应商：<input class="easyui-combobox" id="supplierId" name="supplier.id" style="width: 200px"
-                                   required="true"/>
+                                   required="true"
+                                   data-options="required:true,panelHeight:'auto',valueField:'id',textField:'name',url:'/admin/supplier/comboList'"/>
                     </td>
                     <td>
                         &nbsp;&nbsp;&nbsp;&nbsp;应付金额：<input type="text" id="amountPayable" name="amountPayable"
@@ -58,7 +74,7 @@
     </fieldset>
 </div>
 <div data-options="region:'center'" style="padding: 10px;border: 1px">
-    <table id="dg" class="easyui-datagrid" style="height：1200px"
+    <table id="dg" class="easyui-datagrid" style="height:1200px"
            fitColumns="true" rownumbers="true" singleSelect="true"
            fit="true" toolbar="#tb">
         <thead>
