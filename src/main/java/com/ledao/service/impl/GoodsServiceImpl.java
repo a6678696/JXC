@@ -52,16 +52,16 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public List<Goods> list(Goods goods, Integer page, Integer rows) {
-        Pageable pageable = PageRequest.of(page-1, rows, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of(page - 1, rows, Sort.Direction.ASC, "id");
         Page<Goods> goodsPage = goodsRepository.findAll(new Specification<Goods>() {
             @Override
             public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
                 if (goods != null) {
-                    if(StringUtil.isNotEmpty(goods.getName())){
-                        predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%"+goods.getName()+"%"));
+                    if (StringUtil.isNotEmpty(goods.getName())) {
+                        predicate.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + goods.getName() + "%"));
                     }
-                    if(goods.getType()!=null && goods.getType().getId()!=null && goods.getType().getId()!=1){
+                    if (goods.getType() != null && goods.getType().getId() != null && goods.getType().getId() != 1) {
                         predicate.getExpressions().add(criteriaBuilder.equal(root.get("type").get("id"), goods.getType().getId()));
                     }
                 }
@@ -95,5 +95,144 @@ public class GoodsServiceImpl implements GoodsService {
             }
         });
         return count;
+    }
+
+    /**
+     * 根据商品编码或商品名称条件分页查询没有库存的商品信息
+     *
+     * @param codeOrName
+     * @param page
+     * @param rows
+     * @return
+     */
+    @Override
+    public List<Goods> listNoInventoryQuantityByCodeOrName(String codeOrName, Integer page, Integer rows) {
+        Pageable pageable = PageRequest.of(page - 1, rows, Sort.Direction.ASC, "id");
+        Page<Goods> goodsPage=goodsRepository.findAll(new Specification<Goods>() {
+            @Override
+            public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate predicate = criteriaBuilder.conjunction();
+                if (StringUtil.isNotEmpty(codeOrName)) {
+                    predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + codeOrName + "%"), criteriaBuilder.like(root.get("name"), "%" + codeOrName + "%")));
+                }
+                //库存是0的
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("inventoryQuantity"), 0));
+                return predicate;
+            }
+        },pageable);
+        return goodsPage.getContent();
+    }
+
+    /**
+     * 根据商品编码或商品名称条件分页查询没有库存的商品信息的总记录数
+     *
+     * @param codeOrName
+     * @return
+     */
+    @Override
+    public Long getCountNoInventoryQuantityByCodeOrName(String codeOrName) {
+        Long count=goodsRepository.count(new Specification<Goods>() {
+            @Override
+            public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate predicate = criteriaBuilder.conjunction();
+                if (StringUtil.isNotEmpty(codeOrName)) {
+                    predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + codeOrName + "%"), criteriaBuilder.like(root.get("name"), "%" + codeOrName + "%")));
+                }
+                //库存是0的
+                predicate.getExpressions().add(criteriaBuilder.equal(root.get("inventoryQuantity"), 0));
+                return predicate;
+            }
+        });
+        return count;
+    }
+
+    /**
+     * 根据商品编码或商品名称条件分页查询有库存的商品信息
+     *
+     * @param codeOrName
+     * @param page
+     * @param rows
+     * @return
+     */
+    @Override
+    public List<Goods> listHasInventoryQuantityByCodeOrName(String codeOrName, Integer page, Integer rows) {
+        Pageable pageable = PageRequest.of(page - 1, rows, Sort.Direction.ASC, "id");
+        Page<Goods> goodsPage=goodsRepository.findAll(new Specification<Goods>() {
+            @Override
+            public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate predicate = criteriaBuilder.conjunction();
+                if (StringUtil.isNotEmpty(codeOrName)) {
+                    predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + codeOrName + "%"), criteriaBuilder.like(root.get("name"), "%" + codeOrName + "%")));
+                }
+                //库存大于0的
+                predicate.getExpressions().add(criteriaBuilder.greaterThan(root.get("inventoryQuantity"), 0));
+                return predicate;
+            }
+        },pageable);
+        return goodsPage.getContent();
+    }
+
+    /**
+     * 根据商品编码或商品名称条件分页查询有库存的商品信息的总记录数
+     *
+     * @param codeOrName
+     * @return
+     */
+    @Override
+    public Long getCountHasInventoryQuantityByCodeOrName(String codeOrName) {
+        Long count=goodsRepository.count(new Specification<Goods>() {
+            @Override
+            public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate predicate = criteriaBuilder.conjunction();
+                if (StringUtil.isNotEmpty(codeOrName)) {
+                    predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + codeOrName + "%"), criteriaBuilder.like(root.get("name"), "%" + codeOrName + "%")));
+                }
+                //库存大于0的
+                predicate.getExpressions().add(criteriaBuilder.greaterThan(root.get("inventoryQuantity"), 0));
+                return predicate;
+            }
+        });
+        return count;
+    }
+
+    /**
+     * 获取最大的商品编码
+     *
+     * @return
+     */
+    @Override
+    public String getMaxGoodsCode() {
+        return goodsRepository.getMaxGoodsCode();
+    }
+
+    /**
+     * 添加或者修改商品信息
+     *
+     * @param goods
+     */
+    @Override
+    public void save(Goods goods) {
+        goodsRepository.save(goods);
+    }
+
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+        goodsRepository.deleteById(id);
+    }
+
+    /**
+     * 根据id查询实体
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Goods findById(Integer id) {
+        return goodsRepository.findById(id).get();
     }
 }

@@ -16,11 +16,19 @@ import java.util.List;
  */
 public interface GoodsRepository extends JpaRepository<Goods, Integer>, JpaSpecificationExecutor<Goods> {
     /**
-     * 查询某个类别下的所有商品
+     * 查询商品小类下的所有商品
      *
      * @param typeId
      * @return
      */
-    @Query(value = "select * from t_goods where type_id=?1",nativeQuery = true)
+    @Query(value = "select * from t_goods where type_id=?1", nativeQuery = true)
     List<Goods> findByTypeId(Integer typeId);
+
+    /**
+     * 获取最大的商品编码
+     *
+     * @return
+     */
+    @Query(value = "select max(code) from t_goods",nativeQuery = true)
+    String getMaxGoodsCode();
 }

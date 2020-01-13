@@ -85,13 +85,13 @@ public class Goods {
 
     @Override
     public String toString() {
-        return "Goods{" +
+        return "--{" +
                 "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", purchasingPrice=" + purchasingPrice +
-                ", sellingPrice=" + sellingPrice +
+                ", 编号='" + code + '\'' +
+                ", 商品名称='" + name + '\'' +
+                ", 采购价格=" + purchasingPrice +
+                ", 出售价格=" + sellingPrice +
+                ", 生产厂商=" + producer +
                 '}';
     }
 }

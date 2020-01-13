@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>进货入库</title>
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.7.0/themes/icon.css">
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'north'" style="height: 135px;border: 0px;padding-top: 20px">
+    <fieldset style="border-color: #E7F0FF">
+        <legend>单号</legend>
+        <form id="fm" method="post">
+            <table cellspacing="8px">
+                <tr>
+                    <td>
+                        供应商：<input class="easyui-combobox" id="supplierId" name="supplier.id" style="width: 200px"
+                                   required="true"/>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;应付金额：<input type="text" id="amountPayable" name="amountPayable"
+                                                            class="easyui-validatebox" required="true"
+                                                            readonly="readonly" size="10"/>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;实付金额：<input type="text" id="amountPaid" name="amountPaid"
+                                                            class="easyui-validatebox" required="true" size="10"/>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;收货日期：<input type="text" id="purchaseDate" name="purchaseDate"
+                                                            class="easyui-datebox" required="true"
+                                                            data-options="editable:false" size="18"/>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        备&nbsp;&nbsp;&nbsp;注：<input type="text" id="remarks" name="remarks" size="78"/>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;是否付款：<select class="easyui-combobox" id="state" name="state"
+                                                             style="width: 160px" editable=false panelHeight="auto">
+                        <option value="1">已付</option>
+                        <option value="2">未付</option>
+                    </select>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:savePurchaseGoods()" class="easyui-linkbutton"
+                                                   iconCls="icon-ok">保存</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+</div>
+<div data-options="region:'center'" style="padding: 10px;border: 1px">
+    <table id="dg" class="easyui-datagrid" style="height：1200px"
+           fitColumns="true" rownumbers="true" singleSelect="true"
+           fit="true" toolbar="#tb">
+        <thead>
+        <th field="code" width="30" align="center">商品编码</th>
+        <th field="name" width="150" align="center">商品名称</th>
+        <th field="model" width="50" align="center">型号</th>
+        <th field="unit" width="50" align="center">单位</th>
+        <th field="price" width="50" align="center">单价</th>
+        <th field="num" width="50" align="center">数量</th>
+        <th field="total" width="50" align="right">总金额</th>
+        </thead>
+    </table>
+
+    <div id="tb">
+        <div style="padding: 2px">
+            <a href="javascript:openPurchaseListGoodsAddDialog()" class="easyui-linkbutton" iconCls="icon-add"
+               plain="true">添加</a>
+            <a href="javascript:openPurchaseListGoodsModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit"
+               plain="true">修改</a>
+            <a href="javascript:deletePurchaseListGoods()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
