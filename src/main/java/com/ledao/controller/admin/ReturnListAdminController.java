@@ -3,11 +3,11 @@ package com.ledao.controller.admin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ledao.entity.Log;
-import com.ledao.entity.PurchaseList;
-import com.ledao.entity.PurchaseListGoods;
+import com.ledao.entity.ReturnList;
+import com.ledao.entity.ReturnListGoods;
 import com.ledao.service.LogService;
-import com.ledao.service.PurchaseListGoodsService;
-import com.ledao.service.PurchaseListService;
+import com.ledao.service.ReturnListGoodsService;
+import com.ledao.service.ReturnListService;
 import com.ledao.service.UserService;
 import com.ledao.util.DateUtil;
 import com.ledao.util.StringUtil;
@@ -27,21 +27,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 后台管理进货单Controller
+ * 后台管理退货单Controller
  *
  * @author LeDao
  * @company
  * @create 2020-01-13 22:45
  */
 @RestController
-@RequestMapping("/admin/purchaseList")
-public class PurchaseListAdminController {
+@RequestMapping("/admin/returnList")
+public class ReturnListAdminController {
 
     @Resource
-    private PurchaseListService purchaseListService;
+    private ReturnListService returnListService;
 
     @Resource
-    private PurchaseListGoodsService purchaseListGoodsService;
+    private ReturnListGoodsService returnListGoodsService;
 
     @Resource
     private UserService userService;
@@ -58,19 +58,19 @@ public class PurchaseListAdminController {
     }
 
     /**
-     * 获取进货单号
+     * 获取退货单号
      *
      * @return
      * @throws Exception
      */
     @RequestMapping("/genCode")
-    @RequiresPermissions(value = "进货入库")
+    @RequiresPermissions(value = "退货出库")
     public String genCode() throws Exception {
-        StringBuffer code = new StringBuffer("JH");
+        StringBuffer code = new StringBuffer("TH");
         code.append(DateUtil.getCurrentDateStr());
-        String purchaseNumber = purchaseListService.getTodayMaxPurchaseNumber();
-        if (purchaseNumber != null) {
-            code.append(StringUtil.formatCode(purchaseNumber));
+        String returnNumber = returnListService.getTodayMaxReturnNumber();
+        if (returnNumber != null) {
+            code.append(StringUtil.formatCode(returnNumber));
         } else {
             code.append("0001");
         }
@@ -78,23 +78,23 @@ public class PurchaseListAdminController {
     }
 
     /**
-     * 添加进货单 以及所有进货单商品
+     * 添加退货单 以及所有退货单商品
      *
-     * @param purchaseList
+     * @param returnList
      * @param goodsJson
      * @return
      */
     @RequestMapping("/save")
-    @RequiresPermissions(value = "进货入库")
-    public Map<String, Object> save(PurchaseList purchaseList, String goodsJson) {
+    @RequiresPermissions(value = "退货出库")
+    public Map<String, Object> save(ReturnList returnList, String goodsJson) {
         Map<String, Object> resultMap = new HashMap<>(16);
         //设置操作用户
-        purchaseList.setUser(userService.findByUserName(SecurityUtils.getSubject().getPrincipal().toString()));
+        returnList.setUser(userService.findByUserName(SecurityUtils.getSubject().getPrincipal().toString()));
         Gson gson = new Gson();
-        List<PurchaseListGoods> purchaseListGoodsList = gson.fromJson(goodsJson, new TypeToken<List<PurchaseListGoods>>() {
+        List<ReturnListGoods> returnListGoodsList = gson.fromJson(goodsJson, new TypeToken<List<ReturnListGoods>>() {
         }.getType());
-        purchaseListService.save(purchaseList, purchaseListGoodsList);
-        logService.save(new Log(Log.ADD_ACTION, "添加进货单"));
+        returnListService.save(returnList, returnListGoodsList);
+        logService.save(new Log(Log.ADD_ACTION, "添加退货单"));
         resultMap.put("success", true);
         return resultMap;
     }

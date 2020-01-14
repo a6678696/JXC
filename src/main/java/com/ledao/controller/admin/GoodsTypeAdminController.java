@@ -45,7 +45,7 @@ public class GoodsTypeAdminController {
      * @return
      */
     @RequestMapping("/save")
-    @RequiresPermissions(value = {"商品管理", "进货入库"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"商品管理", "进货入库","退货出库"}, logical = Logical.OR)
     public Map<String, Object> save(String name, Integer parentId) {
         Map<String, Object> resultMap = new HashMap<>(16);
         GoodsType goodsType = new GoodsType();
@@ -71,7 +71,7 @@ public class GoodsTypeAdminController {
      * @return
      */
     @RequestMapping("/delete")
-    @RequiresPermissions(value = {"商品管理", "进货入库"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"商品管理", "进货入库","退货出库"}, logical = Logical.OR)
     public Map<String, Object> delete(Integer id) {
         Map<String, Object> resultMap = new HashMap<>(16);
         //要删除的商品类别下没有商品时,可以删除该商品类别
@@ -99,7 +99,7 @@ public class GoodsTypeAdminController {
      * @return
      */
     @RequestMapping("/loadTreeInfo")
-    @RequiresPermissions(value = {"商品管理", "进货入库"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"商品管理", "进货入库","退货出库"}, logical = Logical.OR)
     public String loadTreeInfo() {
         logService.save(new Log(Log.SEARCH_ACTION, "查询所有商品类别信息"));
         return getAllByParentId(-1).toString();

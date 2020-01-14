@@ -42,7 +42,7 @@ public class GoodsAdminController {
      * @return
      */
     @RequestMapping("/list")
-    @RequiresPermissions(value = {"商品管理", "进货入库"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"商品管理", "进货入库","退货出库"}, logical = Logical.OR)
     public Map<String, Object> list(Goods searchGoods, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
         List<Goods> goodsList = goodsService.list(searchGoods, page, rows);
