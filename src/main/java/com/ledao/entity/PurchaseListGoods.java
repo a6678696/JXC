@@ -50,6 +50,11 @@ public class PurchaseListGoods {
     @JoinColumn(name = "type_id")
     private GoodsType type;
     /**
+     * 类别id
+     */
+    @Transient
+    private Integer typeId;
+    /**
      * 商品id
      */
     private Integer goodsId;
@@ -65,7 +70,7 @@ public class PurchaseListGoods {
     /**
      * 数量
      */
-    private float num;
+    private Integer num;
     /**
      * 总金额
      */

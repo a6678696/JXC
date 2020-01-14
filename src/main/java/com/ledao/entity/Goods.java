@@ -83,6 +83,12 @@ public class Goods {
     @Column(length=1000)
     private String remarks;
 
+    /**
+     * 查询用到 根据商品编码或者商品名称查询
+     */
+    @Transient
+    private String codeOrName;
+
     @Override
     public String toString() {
         return "--{" +

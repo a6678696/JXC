@@ -37,7 +37,7 @@ public class PurchaseList {
     /**
      * 进货日期
      */
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date purchaseDate;
     /**
      * 应付金额

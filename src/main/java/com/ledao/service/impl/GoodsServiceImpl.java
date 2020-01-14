@@ -64,6 +64,9 @@ public class GoodsServiceImpl implements GoodsService {
                     if (goods.getType() != null && goods.getType().getId() != null && goods.getType().getId() != 1) {
                         predicate.getExpressions().add(criteriaBuilder.equal(root.get("type").get("id"), goods.getType().getId()));
                     }
+                    if(StringUtil.isNotEmpty(goods.getCodeOrName())){
+                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%"+goods.getCodeOrName()+"%"), criteriaBuilder.like(root.get("name"), "%"+goods.getCodeOrName()+"%")));
+                    }
                 }
                 return predicate;
             }
@@ -89,6 +92,9 @@ public class GoodsServiceImpl implements GoodsService {
                     }
                     if (goods.getType() != null && goods.getType().getId() != null && goods.getType().getId() != 1) {
                         predicate.getExpressions().add(criteriaBuilder.equal(root.get("type").get("id"), goods.getType().getId()));
+                    }
+                    if(StringUtil.isNotEmpty(goods.getCodeOrName())){
+                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%"+goods.getCodeOrName()+"%"), criteriaBuilder.like(root.get("name"), "%"+goods.getCodeOrName()+"%")));
                     }
                 }
                 return predicate;

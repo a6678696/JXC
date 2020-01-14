@@ -5,6 +5,7 @@ import com.ledao.entity.Log;
 import com.ledao.service.GoodsService;
 import com.ledao.service.LogService;
 import com.ledao.util.StringUtil;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +42,7 @@ public class GoodsAdminController {
      * @return
      */
     @RequestMapping("/list")
-    @RequiresPermissions(value = "商品管理")
+    @RequiresPermissions(value = {"商品管理", "进货入库"}, logical = Logical.OR)
     public Map<String, Object> list(Goods searchGoods, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
         List<Goods> goodsList = goodsService.list(searchGoods, page, rows);
