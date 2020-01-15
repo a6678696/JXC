@@ -31,4 +31,15 @@ public class SaleListGoodsServiceImpl implements SaleListGoodsService {
     public List<SaleListGoods> listBySaleListId(Integer saleListId) {
         return saleListGoodsRepository.listBySaleListId(saleListId);
     }
+
+    /**
+     * 统计某个商品的销售总数
+     *
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public Integer getTotalByGoodsId(Integer goodsId) {
+        return saleListGoodsRepository.getTotalByGoodsId(goodsId) == null ? 0 : saleListGoodsRepository.getTotalByGoodsId(goodsId);
+    }
 }

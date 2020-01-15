@@ -2,8 +2,10 @@ package com.ledao.controller.admin;
 
 import com.ledao.entity.Goods;
 import com.ledao.entity.Log;
+import com.ledao.service.CustomerReturnListGoodsService;
 import com.ledao.service.GoodsService;
 import com.ledao.service.LogService;
+import com.ledao.service.SaleListGoodsService;
 import com.ledao.util.StringUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +33,12 @@ public class GoodsAdminController {
     private GoodsService goodsService;
 
     @Resource
+    private SaleListGoodsService saleListGoodsService;
+
+    @Resource
+    private CustomerReturnListGoodsService customerReturnListGoodsService;
+
+    @Resource
     private LogService logService;
 
     /**
@@ -42,10 +50,34 @@ public class GoodsAdminController {
      * @return
      */
     @RequestMapping("/list")
-    @RequiresPermissions(value = {"商品管理", "进货入库","退货出库"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"商品管理", "进货入库", "退货出库"}, logical = Logical.OR)
     public Map<String, Object> list(Goods searchGoods, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
         Map<String, Object> resultMap = new HashMap<>(16);
         List<Goods> goodsList = goodsService.list(searchGoods, page, rows);
+        Long total = goodsService.getCount(searchGoods);
+        resultMap.put("rows", goodsList);
+        resultMap.put("total", total);
+        logService.save(new Log(Log.SEARCH_ACTION, "查询商品信息"));
+        return resultMap;
+    }
+
+    /**
+     * 根据条件分页查询商品库存信息
+     *
+     * @param searchGoods
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/listInventory")
+    @RequiresPermissions(value = "当前库存查询")
+    public Map<String, Object> listInventory(Goods searchGoods, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        List<Goods> goodsList = goodsService.list(searchGoods, page, rows);
+        for (Goods goods : goodsList) {
+            //设置销售总量
+            goods.setSaleTotal(saleListGoodsService.getTotalByGoodsId(goods.getId()) - customerReturnListGoodsService.getTotalByGoodsId(goods.getId()));
+        }
         Long total = goodsService.getCount(searchGoods);
         resultMap.put("rows", goodsList);
         resultMap.put("total", total);

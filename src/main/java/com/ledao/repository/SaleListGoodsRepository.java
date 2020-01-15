@@ -31,7 +31,16 @@ public interface SaleListGoodsRepository extends JpaRepository<SaleListGoods, In
      *
      * @param saleListId
      */
-    @Query(value = "delete from t_sale_list_goods where sale_list_id=?1",nativeQuery = true)
+    @Query(value = "delete from t_sale_list_goods where sale_list_id=?1", nativeQuery = true)
     @Modifying
     void deleteBySaleListId(Integer saleListId);
+
+    /**
+     * 统计某个商品的销售总数
+     *
+     * @param goodsId
+     * @return
+     */
+    @Query(value = "select sum(num) as total from t_sale_list_goods where goods_id=?1",nativeQuery = true)
+    Integer getTotalByGoodsId(Integer goodsId);
 }

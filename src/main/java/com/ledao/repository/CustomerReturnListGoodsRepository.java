@@ -15,22 +15,33 @@ import java.util.List;
  * @company
  * @create 2020-01-13 22:40
  */
-public interface CustomerReturnListGoodsRepository extends JpaRepository<CustomerReturnListGoods, Integer>,JpaSpecificationExecutor<CustomerReturnListGoods>{
+public interface CustomerReturnListGoodsRepository extends JpaRepository<CustomerReturnListGoods, Integer>, JpaSpecificationExecutor<CustomerReturnListGoods> {
 
     /**
      * 根据客户退货单id查询所有客户退货单商品
+     *
      * @param customerReturnListId
      * @return
      */
-    @Query(value="SELECT * FROM t_customer_return_list_goods WHERE customer_return_list_id=?1",nativeQuery=true)
+    @Query(value = "SELECT * FROM t_customer_return_list_goods WHERE customer_return_list_id=?1", nativeQuery = true)
     List<CustomerReturnListGoods> listByCustomerReturnListId(Integer customerReturnListId);
 
     /**
      * 根据客户退货单id删除所有客户退货单商品
+     *
      * @param customerReturnListId
      * @return
      */
-    @Query(value="delete FROM t_customer_return_list_goods WHERE customer_return_list_id=?1",nativeQuery=true)
+    @Query(value = "delete FROM t_customer_return_list_goods WHERE customer_return_list_id=?1", nativeQuery = true)
     @Modifying
     void deleteByCustomerReturnListId(Integer customerReturnListId);
+
+    /**
+     * 统计某个商品的退货总数
+     *
+     * @param goodsId
+     * @return
+     */
+    @Query(value = "select sum(num) as total from t_customer_return_list_goods where goods_id=?1",nativeQuery = true)
+    Integer getTotalByGoodsId(Integer goodsId);
 }

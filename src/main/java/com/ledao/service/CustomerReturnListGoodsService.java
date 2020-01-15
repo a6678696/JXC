@@ -18,4 +18,12 @@ public interface CustomerReturnListGoodsService {
      * @return
      */
     List<CustomerReturnListGoods> listByCustomerReturnListId(Integer customerReturnListId);
+
+    /**
+     * 统计某个商品的退货总数
+     *
+     * @param goodsId
+     * @return
+     */
+    Integer getTotalByGoodsId(Integer goodsId);
 }

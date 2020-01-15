@@ -25,4 +25,15 @@ public class CustomerReturnListGoodsServiceImpl implements CustomerReturnListGoo
     public List<CustomerReturnListGoods> listByCustomerReturnListId(Integer customerReturnListId) {
         return customerReturnListGoodsRepository.listByCustomerReturnListId(customerReturnListId);
     }
+
+    /**
+     * 统计某个商品的退货总数
+     *
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public Integer getTotalByGoodsId(Integer goodsId) {
+        return customerReturnListGoodsRepository.getTotalByGoodsId(goodsId) == null ? 0 : customerReturnListGoodsRepository.getTotalByGoodsId(goodsId);
+    }
 }
