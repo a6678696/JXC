@@ -8,10 +8,16 @@ import com.ledao.repository.GoodsTypeRepository;
 import com.ledao.repository.ReturnListGoodsRepository;
 import com.ledao.repository.ReturnListRepository;
 import com.ledao.service.ReturnListService;
+import com.ledao.util.StringUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
@@ -70,5 +76,55 @@ public class ReturnListServiceImpl implements ReturnListService {
         }
         returnList.setReturnDate(new Date());
         returnListRepository.save(returnList);
+    }
+
+    @Override
+    public List<ReturnList> list(ReturnList returnList) {
+        return returnListRepository.findAll(new Specification<ReturnList>() {
+            @Override
+            public Predicate toPredicate(Root<ReturnList> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                if (returnList != null) {
+                    if (StringUtil.isNotEmpty(returnList.getReturnNumber())) {
+                        predicate.getExpressions().add(cb.like(root.get("returnNumber"), "%" + returnList.getReturnNumber().trim() + "%"));
+                    }
+                    if (returnList.getSupplier() != null && returnList.getSupplier().getId() != null) {
+                        predicate.getExpressions().add(cb.equal(root.get("supplier").get("id"), returnList.getSupplier().getId()));
+                    }
+                    if (returnList.getState() != null) {
+                        predicate.getExpressions().add(cb.equal(root.get("state"), returnList.getState()));
+                    }
+                    if (returnList.getBReturnDate() != null) {
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("returnDate"), returnList.getBReturnDate()));
+                    }
+                    if (returnList.getEReturnDate() != null) {
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("returnDate"), returnList.getEReturnDate()));
+                    }
+                }
+                return predicate;
+            }
+        });
+    }
+
+    /**
+     * 根据id查询实体
+     *
+     * @param returnId
+     * @return
+     */
+    @Override
+    public ReturnList findById(Integer returnId) {
+        return returnListRepository.findById(returnId).get();
+    }
+
+    /**
+     * 根据id删除退货单信息 包括退货单里的所有商品
+     *
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+        returnListGoodsRepository.deleteByReturnListId(id);
+        returnListRepository.deleteById(id);
     }
 }

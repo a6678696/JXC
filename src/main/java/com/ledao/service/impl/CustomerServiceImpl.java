@@ -110,4 +110,9 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findById(Integer id) {
         return customerRepository.findById(id).get();
     }
+
+    @Override
+    public List<Customer> findByName(String name) {
+        return customerRepository.findByName(name);
+    }
 }

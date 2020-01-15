@@ -4,6 +4,7 @@ import com.ledao.entity.Customer;
 import com.ledao.entity.Log;
 import com.ledao.service.CustomerService;
 import com.ledao.service.LogService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,21 @@ public class CustomerAdminController {
 
     @Resource
     private LogService logService;
+
+    /**
+     * 下拉框模糊查询
+     *
+     * @param q
+     * @return
+     */
+    @RequestMapping("/comboList")
+    @RequiresPermissions(value={"客户退货","销售出库","客户退货","销售单据查询","客户退货查询"},logical=Logical.OR)
+    public List<Customer> comboList(String q) {
+        if (q == null) {
+            q = "";
+        }
+        return customerService.findByName("%" + q + "%");
+    }
 
     /**
      * 分页查询客户信息

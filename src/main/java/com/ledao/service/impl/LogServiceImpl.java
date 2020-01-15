@@ -115,7 +115,6 @@ public class LogServiceImpl implements LogService {
                 }
                 return predicate;
             }
-
         });
         return count;
     }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 退货单实体
+ * 销售单实体
  *
  * @author LeDao
  * @company
@@ -14,8 +14,8 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "t_return_list")
-public class ReturnList {
+@Table(name = "t_sale_list")
+public class SaleList {
 
     /**
      * 编号
@@ -24,21 +24,21 @@ public class ReturnList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
-     * 退货单号
+     * 销售单号
      */
     @Column(length = 100)
-    private String returnNumber;
+    private String saleNumber;
     /**
-     * 供应商
+     * 客户
      */
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
     /**
-     * 退货日期
+     * 销售日期
      */
     @Temporal(TemporalType.DATE)
-    private Date returnDate;
+    private Date saleDate;
     /**
      * 应付金额
      */
@@ -66,19 +66,19 @@ public class ReturnList {
      * 起始日期 搜索用到
      */
     @Transient
-    private Date bReturnDate;
+    private Date bSaleDate;
     /**
      * 结束日期 搜索用到
      */
     @Transient
-    private Date eReturnDate;
+    private Date eSaleDate;
 
     @Override
     public String toString() {
         return "--{" +
                 "编号=" + id +
-                ", 退货单号='" + returnNumber + '\'' +
-                ", 供应商=" + supplier +
+                ", 销售单号='" + saleNumber + '\'' +
+                ", 客户=" + customer.getName() +
                 ", 应付金额=" + amountPayable +
                 ", 实付金额=" + amountPaid +
                 '}';

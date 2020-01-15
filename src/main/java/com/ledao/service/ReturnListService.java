@@ -28,4 +28,27 @@ public interface ReturnListService {
      * @param returnListGoodsList
      */
     void save(ReturnList returnList, List<ReturnListGoods> returnListGoodsList);
+
+    /**
+     * 根据条件查询退货单信息
+     *
+     * @param returnList
+     * @return
+     */
+    List<ReturnList> list(ReturnList returnList);
+
+    /**
+     * 根据id查询实体
+     *
+     * @param returnId
+     * @return
+     */
+    ReturnList findById(Integer returnId);
+
+    /**
+     * 根据id删除退货单信息 包括退货单里的所有商品
+     *
+     * @param id
+     */
+    void delete(Integer id);
 }

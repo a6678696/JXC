@@ -52,4 +52,11 @@ public interface CustomerService {
      * @return
      */
     Customer findById(Integer id);
+
+    /**
+     * 根据名称模糊查询客户信息
+     * @param name
+     * @return
+     */
+    List<Customer> findByName(String name);
 }
