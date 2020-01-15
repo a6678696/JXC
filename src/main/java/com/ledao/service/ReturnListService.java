@@ -51,4 +51,11 @@ public interface ReturnListService {
      * @param id
      */
     void delete(Integer id);
+
+    /**
+     * 更新退货单
+     *
+     * @param returnList
+     */
+    void update(ReturnList returnList);
 }

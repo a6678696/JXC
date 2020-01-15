@@ -51,4 +51,11 @@ public interface PurchaseListService {
      * @param id
      */
     void delete(Integer id);
+
+    /**
+     * 更新进货单
+     *
+     * @param purchaseList
+     */
+    void update(PurchaseList purchaseList);
 }

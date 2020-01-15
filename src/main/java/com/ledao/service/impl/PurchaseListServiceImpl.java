@@ -131,4 +131,14 @@ public class PurchaseListServiceImpl implements PurchaseListService {
         purchaseListGoodsRepository.deleteByPurchaseListId(id);
         purchaseListRepository.deleteById(id);
     }
+
+    /**
+     * 更新进货单
+     *
+     * @param purchaseList
+     */
+    @Override
+    public void update(PurchaseList purchaseList) {
+        purchaseListRepository.save(purchaseList);
+    }
 }

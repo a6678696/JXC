@@ -51,4 +51,11 @@ public interface SaleListService {
      * @param id
      */
     void delete(Integer id);
+
+    /**
+     * 更新销售单
+     *
+     * @param saleList
+     */
+    void update(SaleList saleList);
 }

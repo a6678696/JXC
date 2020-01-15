@@ -151,4 +151,21 @@ public class PurchaseListAdminController {
         resultMap.put("success", true);
         return resultMap;
     }
+
+    /**
+     * 修改进货单的支付状态
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions(value = "供应商统计")
+    public Map<String, Object> update(Integer id) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        PurchaseList purchaseList = purchaseListService.findById(id);
+        purchaseList.setState(1);
+        purchaseListService.update(purchaseList);
+        resultMap.put("success", true);
+        return resultMap;
+    }
 }

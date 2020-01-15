@@ -29,6 +29,14 @@ public interface GoodsRepository extends JpaRepository<Goods, Integer>, JpaSpeci
      *
      * @return
      */
-    @Query(value = "select max(code) from t_goods",nativeQuery = true)
+    @Query(value = "select max(code) from t_goods", nativeQuery = true)
     String getMaxGoodsCode();
+
+    /**
+     * 查询库存报警商品，实际库存小于库存下限的商品
+     *
+     * @return
+     */
+    @Query(value = "select * from t_goods where inventory_quantity<min_num",nativeQuery = true)
+    List<Goods> listAlarm();
 }

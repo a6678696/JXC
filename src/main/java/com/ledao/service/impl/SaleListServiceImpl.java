@@ -128,4 +128,14 @@ public class SaleListServiceImpl implements SaleListService {
         saleListGoodsRepository.deleteBySaleListId(id);
         saleListRepository.deleteById(id);
     }
+
+    /**
+     * 更新销售单
+     *
+     * @param saleList
+     */
+    @Override
+    public void update(SaleList saleList) {
+        saleListRepository.save(saleList);
+    }
 }

@@ -127,4 +127,14 @@ public class ReturnListServiceImpl implements ReturnListService {
         returnListGoodsRepository.deleteByReturnListId(id);
         returnListRepository.deleteById(id);
     }
+
+    /**
+     * 更新退货单
+     *
+     * @param returnList
+     */
+    @Override
+    public void update(ReturnList returnList) {
+        returnListRepository.save(returnList);
+    }
 }

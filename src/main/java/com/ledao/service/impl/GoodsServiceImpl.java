@@ -64,8 +64,8 @@ public class GoodsServiceImpl implements GoodsService {
                     if (goods.getType() != null && goods.getType().getId() != null && goods.getType().getId() != 1) {
                         predicate.getExpressions().add(criteriaBuilder.equal(root.get("type").get("id"), goods.getType().getId()));
                     }
-                    if(StringUtil.isNotEmpty(goods.getCodeOrName())){
-                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%"+goods.getCodeOrName()+"%"), criteriaBuilder.like(root.get("name"), "%"+goods.getCodeOrName()+"%")));
+                    if (StringUtil.isNotEmpty(goods.getCodeOrName())) {
+                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + goods.getCodeOrName() + "%"), criteriaBuilder.like(root.get("name"), "%" + goods.getCodeOrName() + "%")));
                     }
                 }
                 return predicate;
@@ -93,8 +93,8 @@ public class GoodsServiceImpl implements GoodsService {
                     if (goods.getType() != null && goods.getType().getId() != null && goods.getType().getId() != 1) {
                         predicate.getExpressions().add(criteriaBuilder.equal(root.get("type").get("id"), goods.getType().getId()));
                     }
-                    if(StringUtil.isNotEmpty(goods.getCodeOrName())){
-                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%"+goods.getCodeOrName()+"%"), criteriaBuilder.like(root.get("name"), "%"+goods.getCodeOrName()+"%")));
+                    if (StringUtil.isNotEmpty(goods.getCodeOrName())) {
+                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + goods.getCodeOrName() + "%"), criteriaBuilder.like(root.get("name"), "%" + goods.getCodeOrName() + "%")));
                     }
                 }
                 return predicate;
@@ -114,7 +114,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods> listNoInventoryQuantityByCodeOrName(String codeOrName, Integer page, Integer rows) {
         Pageable pageable = PageRequest.of(page - 1, rows, Sort.Direction.ASC, "id");
-        Page<Goods> goodsPage=goodsRepository.findAll(new Specification<Goods>() {
+        Page<Goods> goodsPage = goodsRepository.findAll(new Specification<Goods>() {
             @Override
             public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
@@ -125,7 +125,7 @@ public class GoodsServiceImpl implements GoodsService {
                 predicate.getExpressions().add(criteriaBuilder.equal(root.get("inventoryQuantity"), 0));
                 return predicate;
             }
-        },pageable);
+        }, pageable);
         return goodsPage.getContent();
     }
 
@@ -137,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public Long getCountNoInventoryQuantityByCodeOrName(String codeOrName) {
-        Long count=goodsRepository.count(new Specification<Goods>() {
+        Long count = goodsRepository.count(new Specification<Goods>() {
             @Override
             public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
@@ -163,7 +163,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods> listHasInventoryQuantityByCodeOrName(String codeOrName, Integer page, Integer rows) {
         Pageable pageable = PageRequest.of(page - 1, rows, Sort.Direction.ASC, "id");
-        Page<Goods> goodsPage=goodsRepository.findAll(new Specification<Goods>() {
+        Page<Goods> goodsPage = goodsRepository.findAll(new Specification<Goods>() {
             @Override
             public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
@@ -174,7 +174,7 @@ public class GoodsServiceImpl implements GoodsService {
                 predicate.getExpressions().add(criteriaBuilder.greaterThan(root.get("inventoryQuantity"), 0));
                 return predicate;
             }
-        },pageable);
+        }, pageable);
         return goodsPage.getContent();
     }
 
@@ -186,7 +186,7 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public Long getCountHasInventoryQuantityByCodeOrName(String codeOrName) {
-        Long count=goodsRepository.count(new Specification<Goods>() {
+        Long count = goodsRepository.count(new Specification<Goods>() {
             @Override
             public Predicate toPredicate(Root<Goods> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 Predicate predicate = criteriaBuilder.conjunction();
@@ -240,5 +240,15 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods findById(Integer id) {
         return goodsRepository.findById(id).get();
+    }
+
+    /**
+     * 查询库存报警商品，实际库存小于库存下限的商品
+     *
+     * @return
+     */
+    @Override
+    public List<Goods> listAlarm() {
+        return goodsRepository.listAlarm();
     }
 }

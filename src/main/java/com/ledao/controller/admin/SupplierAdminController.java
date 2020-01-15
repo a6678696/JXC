@@ -39,7 +39,7 @@ public class SupplierAdminController {
      * @return
      */
     @RequestMapping("/comboList")
-    @RequiresPermissions(value={"进货入库","退货出库","进货单据查询"},logical= Logical.OR)
+    @RequiresPermissions(value={"进货入库","退货出库","进货单据查询","退货单据查询","供应商统计"},logical=Logical.OR)
     public List<Supplier> comboList(String q) {
         if (q == null) {
             q = "";

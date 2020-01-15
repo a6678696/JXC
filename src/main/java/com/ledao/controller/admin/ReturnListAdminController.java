@@ -151,4 +151,21 @@ public class ReturnListAdminController {
         resultMap.put("success", true);
         return resultMap;
     }
+
+    /**
+     * 修改退货单的支付状态
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions(value = "供应商统计")
+    public Map<String, Object> update(Integer id) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        ReturnList returnList = returnListService.findById(id);
+        returnList.setState(1);
+        returnListService.update(returnList);
+        resultMap.put("success", true);
+        return resultMap;
+    }
 }

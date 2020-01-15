@@ -62,6 +62,20 @@ public class GoodsAdminController {
     }
 
     /**
+     * 查询库存报警商品
+     *
+     * @return
+     */
+    @RequestMapping("/listAlarm")
+    @RequiresPermissions(value = "库存报警")
+    public Map<String, Object> listAlarm() {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        resultMap.put("rows", goodsService.listAlarm());
+        logService.save(new Log(Log.SEARCH_ACTION, "查询库存报警商品信息"));
+        return resultMap;
+    }
+
+    /**
      * 根据条件分页查询商品库存信息
      *
      * @param searchGoods

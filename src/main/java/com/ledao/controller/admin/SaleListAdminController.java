@@ -95,7 +95,7 @@ public class SaleListAdminController {
         List<SaleListGoods> saleListGoodsList = gson.fromJson(goodsJson, new TypeToken<List<SaleListGoods>>() {
         }.getType());
         saleListService.save(saleList, saleListGoodsList);
-        logService.save(new Log(Log.ADD_ACTION, "添加销售单"+saleListService.findById(saleList.getId())));
+        logService.save(new Log(Log.ADD_ACTION, "添加销售单" + saleListService.findById(saleList.getId())));
         resultMap.put("success", true);
         return resultMap;
     }
@@ -148,6 +148,23 @@ public class SaleListAdminController {
         Map<String, Object> resultMap = new HashMap<>(16);
         logService.save(new Log(Log.DELETE_ACTION, "删除销售单信息" + saleListService.findById(id)));
         saleListService.delete(id);
+        resultMap.put("success", true);
+        return resultMap;
+    }
+
+    /**
+     * 更新销售单
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions(value = "客户统计")
+    public Map<String, Object> update(Integer id) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        SaleList saleList = saleListService.findById(id);
+        saleList.setState(1);
+        saleListService.update(saleList);
         resultMap.put("success", true);
         return resultMap;
     }

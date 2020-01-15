@@ -103,4 +103,11 @@ public interface GoodsService {
      * @return
      */
     Goods findById(Integer id);
+
+    /**
+     * 查询库存报警商品，实际库存小于库存下限的商品
+     *
+     * @return
+     */
+    List<Goods> listAlarm();
 }

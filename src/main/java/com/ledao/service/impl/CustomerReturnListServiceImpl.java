@@ -44,22 +44,33 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
     @Resource
     private CustomerReturnListGoodsRepository customerReturnListGoodsRepository;
 
+    /**
+     * 获取当天最大客户退货单号
+     *
+     * @return
+     */
     @Override
     public String getTodayMaxCustomerReturnNumber() {
         return customerReturnListRepository.getTodayMaxCustomerReturnNumber();
     }
 
+    /**
+     * 添加客户退货单 以及所有客户退货单商品 以及 修改 库存数量
+     *
+     * @param customerReturnList
+     * @param customerReturnListGoodsList
+     */
     @Override
     public void save(CustomerReturnList customerReturnList, List<CustomerReturnListGoods> customerReturnListGoodsList) {
-        for(CustomerReturnListGoods customerReturnListGoods:customerReturnListGoodsList){
+        for (CustomerReturnListGoods customerReturnListGoods : customerReturnListGoodsList) {
             // 设置类别
             customerReturnListGoods.setType(goodsTypeRepository.findById(customerReturnListGoods.getTypeId()).get());
             // 设置客户退货单
             customerReturnListGoods.setCustomerReturnList(customerReturnList);
             customerReturnListGoodsRepository.save(customerReturnListGoods);
             // 修改商品库存
-            Goods goods=goodsRepository.findById(customerReturnListGoods.getGoodsId()).get();
-            goods.setInventoryQuantity(goods.getInventoryQuantity()+customerReturnListGoods.getNum());
+            Goods goods = goodsRepository.findById(customerReturnListGoods.getGoodsId()).get();
+            goods.setInventoryQuantity(goods.getInventoryQuantity() + customerReturnListGoods.getNum());
             goods.setState(2);
             goodsRepository.save(goods);
         }
@@ -68,27 +79,33 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
         customerReturnListRepository.save(customerReturnList);
     }
 
+    /**
+     * 根据条件查询客户退货单信息
+     *
+     * @param customerReturnList
+     * @return
+     */
     @Override
     public List<CustomerReturnList> list(CustomerReturnList customerReturnList) {
         return customerReturnListRepository.findAll(new Specification<CustomerReturnList>() {
 
             @Override
             public Predicate toPredicate(Root<CustomerReturnList> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Predicate predicate=cb.conjunction();
-                if(customerReturnList!=null){
-                    if(StringUtil.isNotEmpty(customerReturnList.getCustomerReturnNumber())){
-                        predicate.getExpressions().add(cb.like(root.get("customerReturnNumber"), "%"+customerReturnList.getCustomerReturnNumber().trim()+"%"));
+                Predicate predicate = cb.conjunction();
+                if (customerReturnList != null) {
+                    if (StringUtil.isNotEmpty(customerReturnList.getCustomerReturnNumber())) {
+                        predicate.getExpressions().add(cb.like(root.get("customerReturnNumber"), "%" + customerReturnList.getCustomerReturnNumber().trim() + "%"));
                     }
-                    if(customerReturnList.getCustomer()!=null && customerReturnList.getCustomer().getId()!=null){
+                    if (customerReturnList.getCustomer() != null && customerReturnList.getCustomer().getId() != null) {
                         predicate.getExpressions().add(cb.equal(root.get("customer").get("id"), customerReturnList.getCustomer().getId()));
                     }
-                    if(customerReturnList.getState()!=null){
+                    if (customerReturnList.getState() != null) {
                         predicate.getExpressions().add(cb.equal(root.get("state"), customerReturnList.getState()));
                     }
-                    if(customerReturnList.getBCustomerReturnDate()!=null){
+                    if (customerReturnList.getBCustomerReturnDate() != null) {
                         predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.getBCustomerReturnDate()));
                     }
-                    if(customerReturnList.getECustomerReturnDate()!=null){
+                    if (customerReturnList.getECustomerReturnDate() != null) {
                         predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.getECustomerReturnDate()));
                     }
                 }
@@ -97,14 +114,35 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
         });
     }
 
+    /**
+     * 根据id查询实体
+     *
+     * @param id
+     * @return
+     */
     @Override
     public CustomerReturnList findById(Integer id) {
         return customerReturnListRepository.findById(id).get();
     }
 
+    /**
+     * 根据id删除客户退货单信息 包括客户退货单里的所有商品
+     *
+     * @param id
+     */
     @Override
     public void delete(Integer id) {
         customerReturnListGoodsRepository.deleteByCustomerReturnListId(id);
         customerReturnListRepository.deleteById(id);
+    }
+
+    /**
+     * 更新客户退货单
+     *
+     * @param customerReturnList
+     */
+    @Override
+    public void update(CustomerReturnList customerReturnList) {
+        customerReturnListRepository.save(customerReturnList);
     }
 }

@@ -110,7 +110,7 @@ public class LogServiceImpl implements LogService {
                         predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("time"), log.getBTime()));
                     }
                     if(log.getETime()!=null){
-                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("time"), log.getBTime()));
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("time"), log.getETime()));
                     }
                 }
                 return predicate;

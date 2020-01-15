@@ -49,5 +49,12 @@ public interface CustomerReturnListService {
      * @param id
      */
     void delete(Integer id);
+
+    /**
+     * 更新客户退货单
+     *
+     * @param customerReturnList
+     */
+    void update(CustomerReturnList customerReturnList);
 }
 
