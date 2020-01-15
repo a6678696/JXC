@@ -17,6 +17,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -95,6 +96,58 @@ public class PurchaseListAdminController {
         }.getType());
         purchaseListService.save(purchaseList, purchaseListGoodsList);
         logService.save(new Log(Log.ADD_ACTION, "添加进货单"));
+        resultMap.put("success", true);
+        return resultMap;
+    }
+
+    /**
+     * 根据条件查询所有进货单信息
+     *
+     * @param searchPurchaseList
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/list")
+    @RequiresPermissions(value = "进货单据查询")
+    public Map<String, Object> list(PurchaseList searchPurchaseList, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "rows", required = false) Integer rows) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        List<PurchaseList> purchaseListList = purchaseListService.list(searchPurchaseList);
+        resultMap.put("rows", purchaseListList);
+        logService.save(new Log(Log.SEARCH_ACTION, "进货单查询"));
+        return resultMap;
+    }
+
+    /**
+     * 根据进货单id查询所有进货单商品
+     *
+     * @param purchaseListId
+     * @return
+     */
+    @RequestMapping("/listGoods")
+    @RequiresPermissions(value = "进货单据查询")
+    public Map<String, Object> listGoods(Integer purchaseListId) {
+        if (purchaseListId == null) {
+            return null;
+        }
+        Map<String, Object> resultMap = new HashMap<>(16);
+        resultMap.put("rows", purchaseListGoodsService.listByPurchaseListId(purchaseListId));
+        logService.save(new Log(Log.SEARCH_ACTION, "进货单商品查询"));
+        return resultMap;
+    }
+
+    /**
+     * 删除进货单 以及进货单里的商品
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions(value = "进货单据查询")
+    public Map<String, Object> delete(Integer id) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        logService.save(new Log(Log.DELETE_ACTION, "删除进货单信息" + purchaseListService.findById(id)));
+        purchaseListService.delete(id);
         resultMap.put("success", true);
         return resultMap;
     }

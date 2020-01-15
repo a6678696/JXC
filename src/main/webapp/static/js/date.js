@@ -4,6 +4,11 @@ function genTodayStr(){
 	return date.getFullYear()+"-"+formatZero(date.getMonth()+1)+"-"+formatZero(date.getDate());
 }
 
+function genTodayStrAddOne(){
+	var date = new Date();
+	return date.getFullYear()+"-"+formatZero(date.getMonth()+1)+"-"+formatZero(date.getDate()+1);
+}
+
 function genLastYearStr(){
 	var date = new Date();
 	date.setFullYear(date.getFullYear()-1);

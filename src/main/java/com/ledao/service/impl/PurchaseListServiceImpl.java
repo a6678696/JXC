@@ -9,10 +9,16 @@ import com.ledao.repository.PurchaseListGoodsRepository;
 import com.ledao.repository.PurchaseListRepository;
 import com.ledao.service.PurchaseListService;
 import com.ledao.util.MathUtil;
+import com.ledao.util.StringUtil;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +29,7 @@ import java.util.List;
  * @company
  * @create 2020-01-13 22:44
  */
-@Service("purchaseListService")
+@Service("searchPurchaseListService")
 @Transactional(rollbackFor = Exception.class)
 public class PurchaseListServiceImpl implements PurchaseListService {
 
@@ -52,27 +58,77 @@ public class PurchaseListServiceImpl implements PurchaseListService {
     /**
      * 添加进货单 以及所有进货单商品 以及 修改商品成本价 库存数量 上次进价
      *
-     * @param purchaseList
-     * @param purchaseListGoodsList
+     * @param searchPurchaseList
+     * @param searchPurchaseListGoodsList
      */
     @Override
-    public void save(PurchaseList purchaseList, List<PurchaseListGoods> purchaseListGoodsList) {
-        for (PurchaseListGoods purchaseListGoods : purchaseListGoodsList) {
+    public void save(PurchaseList searchPurchaseList, List<PurchaseListGoods> searchPurchaseListGoodsList) {
+        for (PurchaseListGoods searchPurchaseListGoods : searchPurchaseListGoodsList) {
             //设置类别
-            purchaseListGoods.setType(goodsTypeRepository.findById(purchaseListGoods.getTypeId()).get());
+            searchPurchaseListGoods.setType(goodsTypeRepository.findById(searchPurchaseListGoods.getTypeId()).get());
             //设置进货单
-            purchaseListGoods.setPurchaseList(purchaseList);
-            purchaseListGoodsRepository.save(purchaseListGoods);
+            searchPurchaseListGoods.setPurchaseList(searchPurchaseList);
+            purchaseListGoodsRepository.save(searchPurchaseListGoods);
             // 修改商品库存 成本均价 以及上次进价
-            Goods goods = goodsRepository.findById(purchaseListGoods.getGoodsId()).get();
-            float svePurchasePrice = (goods.getPurchasingPrice() * goods.getInventoryQuantity() + purchaseListGoods.getPrice() * purchaseListGoods.getNum()) / (goods.getInventoryQuantity() + purchaseListGoods.getNum());
+            Goods goods = goodsRepository.findById(searchPurchaseListGoods.getGoodsId()).get();
+            float svePurchasePrice = (goods.getPurchasingPrice() * goods.getInventoryQuantity() + searchPurchaseListGoods.getPrice() * searchPurchaseListGoods.getNum()) / (goods.getInventoryQuantity() + searchPurchaseListGoods.getNum());
             goods.setPurchasingPrice(MathUtil.format2Bit(svePurchasePrice));
-            goods.setInventoryQuantity(goods.getInventoryQuantity() + purchaseListGoods.getNum());
-            goods.setLastPurchasingPrice(purchaseListGoods.getPrice());
+            goods.setInventoryQuantity(goods.getInventoryQuantity() + searchPurchaseListGoods.getNum());
+            goods.setLastPurchasingPrice(searchPurchaseListGoods.getPrice());
             goods.setState(2);
             goodsRepository.save(goods);
         }
-        purchaseList.setPurchaseDate(new Date());
-        purchaseListRepository.save(purchaseList);
+        searchPurchaseList.setPurchaseDate(new Date());
+        purchaseListRepository.save(searchPurchaseList);
+    }
+
+    @Override
+    public List<PurchaseList> list(PurchaseList purchaseList) {
+        return purchaseListRepository.findAll(new Specification<PurchaseList>() {
+            @Override
+            public Predicate toPredicate(Root<PurchaseList> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate predicate = cb.conjunction();
+                if (purchaseList != null) {
+                    if (StringUtil.isNotEmpty(purchaseList.getPurchaseNumber())) {
+                        predicate.getExpressions().add(cb.like(root.get("purchaseNumber"), "%" + purchaseList.getPurchaseNumber().trim() + "%"));
+                    }
+                    if (purchaseList.getSupplier() != null && purchaseList.getSupplier().getId() != null) {
+                        predicate.getExpressions().add(cb.equal(root.get("supplier").get("id"), purchaseList.getSupplier().getId()));
+                    }
+                    if (purchaseList.getState() != null) {
+                        predicate.getExpressions().add(cb.equal(root.get("state"), purchaseList.getState()));
+                    }
+                    if (purchaseList.getBPurchaseDate() != null) {
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("purchaseDate"), purchaseList.getBPurchaseDate()));
+                    }
+                    if (purchaseList.getEPurchaseDate() != null) {
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("purchaseDate"), purchaseList.getEPurchaseDate()));
+                    }
+                }
+                return predicate;
+            }
+        });
+    }
+
+    /**
+     * 根据id查询实体
+     *
+     * @param purchaseId
+     * @return
+     */
+    @Override
+    public PurchaseList findById(Integer purchaseId) {
+        return purchaseListRepository.findById(purchaseId).get();
+    }
+
+    /**
+     * 根据id删除进货单信息 包括进货单里的所有商品
+     *
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+        purchaseListGoodsRepository.deleteByPurchaseListId(id);
+        purchaseListRepository.deleteById(id);
     }
 }

@@ -19,6 +19,6 @@ public interface PurchaseListRepository extends JpaRepository<PurchaseList, Inte
      *
      * @return
      */
-    @Query(value = "select MAX(purchase_number) from t_purchase_list where to_days(purchase_date)=to_days(now())",nativeQuery = true)
+    @Query(value = "select MAX(purchase_number) from t_purchase_list where to_days(purchase_date)=to_days(now())", nativeQuery = true)
     String getTodayMaxPurchaseNumber();
 }

@@ -62,4 +62,25 @@ public class PurchaseList {
      */
     @Column(length = 1000)
     private String remarks;
+    /**
+     * 起始日期 搜索用到
+     */
+    @Transient
+    private Date bPurchaseDate;
+    /**
+     * 结束日期 搜索用到
+     */
+    @Transient
+    private Date ePurchaseDate;
+
+    @Override
+    public String toString() {
+        return "--{" +
+                "编号=" + id +
+                ", 进货单号='" + purchaseNumber + '\'' +
+                ", 供应商=" + supplier.getName() +
+                ", 应付金额=" + amountPayable +
+                ", 实付金额=" + amountPaid +
+                '}';
+    }
 }

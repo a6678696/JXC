@@ -4,6 +4,7 @@ import com.ledao.entity.Log;
 import com.ledao.entity.Supplier;
 import com.ledao.service.LogService;
 import com.ledao.service.SupplierService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +39,7 @@ public class SupplierAdminController {
      * @return
      */
     @RequestMapping("/comboList")
-    @RequiresPermissions(value = "进货入库")
+    @RequiresPermissions(value={"进货入库","退货出库","进货单据查询"},logical= Logical.OR)
     public List<Supplier> comboList(String q) {
         if (q == null) {
             q = "";

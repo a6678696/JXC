@@ -28,4 +28,27 @@ public interface PurchaseListService {
      * @param purchaseListGoodsList
      */
     void save(PurchaseList purchaseList, List<PurchaseListGoods> purchaseListGoodsList);
+
+    /**
+     * 根据条件查询进货单信息
+     *
+     * @param purchaseList
+     * @return
+     */
+    List<PurchaseList> list(PurchaseList purchaseList);
+
+    /**
+     * 根据id查询实体
+     *
+     * @param purchaseId
+     * @return
+     */
+    PurchaseList findById(Integer purchaseId);
+
+    /**
+     * 根据id删除进货单信息 包括进货单里的所有商品
+     *
+     * @param id
+     */
+    void delete(Integer id);
 }
