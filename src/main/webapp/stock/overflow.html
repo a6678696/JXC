@@ -344,7 +344,7 @@
 
 
 
-<div id="dlg" class="easyui-dialog" style="width: 800px;height: 460px;"
+<div id="dlg" class="easyui-dialog" style="width: 1200px;height: 560px;"
      closed="true"  data-options="onClose:function(){$('#s_codeOrName').val('');}">
     <div class="easyui-layout" style="width: 100%;height: 100%">
         <div region="north" style="height: 50px">
@@ -387,7 +387,7 @@
     </div>
 </div>
 
-<div id="dlg2" class="easyui-dialog" style="width: 450px;height: 265px;padding: 5px 5px"
+<div id="dlg2" class="easyui-dialog" style="width: 580px;height: 290px;padding: 5px 5px"
      closed="true" buttons="#dlg-buttons2" data-options="onClose:function(){resetValue()}">
     <fieldset style="border-color: #E7F0FF">
         <legend>商品信息</legend>
@@ -396,31 +396,31 @@
                 <tr>
                     <td>商品编号：</td>
                     <td>
-                        <input type="text" id="code" name="code" readonly="readonly" size="10"/>
+                        <input type="text" id="code" name="code" readonly="readonly" size="20"/>
                     </td>
-                    <td width="60">商品名称：</td>
+                    <td>商品名称：</td>
                     <td>
-                        <input type="text" id="name" name="name" readonly="readonly" size="10"/>
+                        <input type="text" id="name" name="name" readonly="readonly" size="20"/>
                     </td>
                 </tr>
                 <tr>
                     <td>商品型号：</td>
                     <td>
-                        <input type="text" id="model" name="model" readonly="readonly" size="10"/>
+                        <input type="text" id="model" name="model" readonly="readonly" size="20"/>
                     </td>
                     <td>商品单位：</td>
                     <td>
-                        <input type="text" id="unit" name="unit" readonly="readonly" size="10"/>
+                        <input type="text" id="unit" name="unit" readonly="readonly" size="20"/>
                     </td>
                 </tr>
                 <tr>
                     <td>上次进价：</td>
                     <td>
-                        <input type="text" id="lastPurchasingPrice" name="lastPurchasingPrice" readonly="readonly" size="10"/>
+                        <input type="text" id="lastPurchasingPrice" name="lastPurchasingPrice" readonly="readonly" size="20"/>
                     </td>
                     <td>当年库存：</td>
                     <td>
-                        <input type="text" id="inventoryQuantity" name="inventoryQuantity" readonly="readonly" size="10"/>
+                        <input type="text" id="inventoryQuantity" name="inventoryQuantity" readonly="readonly" size="20"/>
                     </td>
                 </tr>
             </table>
@@ -436,7 +436,7 @@
                         <input type="hidden" id="rowIndex"/>
                         <input type="text" id="price" name="price" class="easyui-numberbox" data-options="min:0,precision:2" required="true" size="10"/>
                     </td>
-                    <td align="right" width="60">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量：</td>
+                    <td align="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数量：</td>
                     <td>
                         <input type="text" id="num" name="num" class="easyui-numberbox" data-options="min:1" required="true" size="10"/>
                     </td>
