@@ -44,22 +44,11 @@ public class SaleListServiceImpl implements SaleListService {
     @Resource
     private SaleListGoodsRepository saleListGoodsRepository;
 
-    /**
-     * 获取当天最大销售单号
-     *
-     * @return
-     */
     @Override
     public String getTodayMaxSaleNumber() {
         return saleListRepository.getTodayMaxSaleNumber();
     }
 
-    /**
-     * 添加销售单 以及所有销售单商品 以及库存数量
-     *
-     * @param searchSaleList
-     * @param searchSaleListGoodsList
-     */
     @Override
     public void save(SaleList searchSaleList, List<SaleListGoods> searchSaleListGoodsList) {
         for (SaleListGoods searchSaleListGoods : searchSaleListGoodsList) {
@@ -107,35 +96,29 @@ public class SaleListServiceImpl implements SaleListService {
         });
     }
 
-    /**
-     * 根据id查询实体
-     *
-     * @param saleId
-     * @return
-     */
     @Override
     public SaleList findById(Integer saleId) {
         return saleListRepository.findById(saleId).get();
     }
 
-    /**
-     * 根据id删除销售单信息 包括销售单里的所有商品
-     *
-     * @param id
-     */
     @Override
     public void delete(Integer id) {
         saleListGoodsRepository.deleteBySaleListId(id);
         saleListRepository.deleteById(id);
     }
 
-    /**
-     * 更新销售单
-     *
-     * @param saleList
-     */
     @Override
     public void update(SaleList saleList) {
         saleListRepository.save(saleList);
+    }
+
+    @Override
+    public List<Object> countSaleByDay(String begin, String end) {
+        return saleListRepository.countSaleByDay(begin, end);
+    }
+
+    @Override
+    public List<Object> countSaleByMonth(String begin, String end) {
+        return saleListRepository.countSaleByMonth(begin, end);
     }
 }

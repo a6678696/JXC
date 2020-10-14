@@ -75,4 +75,9 @@ public class PurchaseListGoods {
      * 总金额
      */
     private float total;
+    /**
+     * 编号或名称
+     */
+    @Transient
+    private String codeOrName;
 }

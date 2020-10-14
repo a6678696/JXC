@@ -2,9 +2,7 @@ package com.ledao.controller.admin;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ledao.entity.Log;
-import com.ledao.entity.ReturnList;
-import com.ledao.entity.ReturnListGoods;
+import com.ledao.entity.*;
 import com.ledao.service.LogService;
 import com.ledao.service.ReturnListGoodsService;
 import com.ledao.service.ReturnListService;
@@ -166,6 +164,29 @@ public class ReturnListAdminController {
         returnList.setState(1);
         returnListService.update(returnList);
         resultMap.put("success", true);
+        return resultMap;
+    }
+
+    /**
+     * 根据条件获取商品采购信息
+     *
+     * @param returnList
+     * @param returnListGoods
+     * @return
+     */
+    @RequestMapping("/listCount")
+    @RequiresPermissions(value = "商品采购统计")
+    public Map<String, Object> listCount(ReturnList returnList, ReturnListGoods returnListGoods) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        returnListGoods.setTypeId(returnListGoods.getType().getId());
+        List<ReturnList> ReturnListList = returnListService.list(returnList);
+        for (ReturnList list : ReturnListList) {
+            returnListGoods.setReturnList(list);
+            List<ReturnListGoods> ReturnListGoodsList = returnListGoodsService.list(returnListGoods);
+            list.setReturnListGoodsList(ReturnListGoodsList);
+        }
+        resultMap.put("rows", ReturnListList);
+        logService.save(new Log(Log.SEARCH_ACTION, "商品采购统计查询"));
         return resultMap;
     }
 }

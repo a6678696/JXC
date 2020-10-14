@@ -58,4 +58,20 @@ public interface SaleListService {
      * @param saleList
      */
     void update(SaleList saleList);
+
+    /**
+     * 按天统计某个日期范围内的销售信息
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Object> countSaleByDay(String begin,String end);
+
+    /**
+     * 按月统计某个日期范围内的销售信息
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Object> countSaleByMonth(String begin,String end);
 }

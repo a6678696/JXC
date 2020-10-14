@@ -2,9 +2,7 @@ package com.ledao.controller.admin;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.ledao.entity.CustomerReturnList;
-import com.ledao.entity.CustomerReturnListGoods;
-import com.ledao.entity.Log;
+import com.ledao.entity.*;
 import com.ledao.service.CustomerReturnListGoodsService;
 import com.ledao.service.CustomerReturnListService;
 import com.ledao.service.LogService;
@@ -167,6 +165,29 @@ public class CustomerReturnListAdminController {
         customerReturnList.setState(1);
         customerReturnListService.update(customerReturnList);
         resultMap.put("success", true);
+        return resultMap;
+    }
+
+    /**
+     * 根据条件获取商品销售信息
+     *
+     * @param customerReturnList
+     * @param customerReturnListGoods
+     * @return
+     */
+    @RequestMapping("/listCount")
+    @RequiresPermissions(value = "商品销售统计")
+    public Map<String, Object> listCount(CustomerReturnList customerReturnList, CustomerReturnListGoods customerReturnListGoods) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        customerReturnListGoods.setTypeId(customerReturnListGoods.getType().getId());
+        List<CustomerReturnList> CustomerReturnListList = customerReturnListService.list(customerReturnList);
+        for (CustomerReturnList list : CustomerReturnListList) {
+            customerReturnListGoods.setCustomerReturnList(list);
+            List<CustomerReturnListGoods> CustomerReturnListGoodsList = customerReturnListGoodsService.list(customerReturnListGoods);
+            list.setCustomerReturnListGoodsList(CustomerReturnListGoodsList);
+        }
+        resultMap.put("rows", CustomerReturnListList);
+        logService.save(new Log(Log.SEARCH_ACTION, "商品采购统计查询"));
         return resultMap;
     }
 }

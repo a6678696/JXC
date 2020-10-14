@@ -5,10 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ledao.entity.Log;
 import com.ledao.entity.PurchaseList;
 import com.ledao.entity.PurchaseListGoods;
-import com.ledao.service.LogService;
-import com.ledao.service.PurchaseListGoodsService;
-import com.ledao.service.PurchaseListService;
-import com.ledao.service.UserService;
+import com.ledao.service.*;
 import com.ledao.util.DateUtil;
 import com.ledao.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
@@ -46,6 +43,9 @@ public class PurchaseListAdminController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private GoodsTypeService goodsTypeService;
 
     @Resource
     private LogService logService;
@@ -166,6 +166,22 @@ public class PurchaseListAdminController {
         purchaseList.setState(1);
         purchaseListService.update(purchaseList);
         resultMap.put("success", true);
+        return resultMap;
+    }
+
+    @RequestMapping("/listCount")
+    @RequiresPermissions(value = "商品采购统计")
+    public Map<String, Object> listCount(PurchaseList purchaseList, PurchaseListGoods purchaseListGoods) {
+        Map<String,Object> resultMap=new HashMap<>(16);
+        purchaseListGoods.setTypeId(purchaseListGoods.getType().getId());
+        List<PurchaseList> purchaseListList = purchaseListService.list(purchaseList);
+        for (PurchaseList list : purchaseListList) {
+            purchaseListGoods.setPurchaseList(list);
+            List<PurchaseListGoods> purchaseListGoodsList = purchaseListGoodsService.list(purchaseListGoods);
+            list.setPurchaseListGoodsList(purchaseListGoodsList);
+        }
+        resultMap.put("rows", purchaseListList);
+        logService.save(new Log(Log.SEARCH_ACTION,"商品采购统计查询"));
         return resultMap;
     }
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 销售单实体
@@ -72,6 +73,11 @@ public class SaleList {
      */
     @Transient
     private Date eSaleDate;
+    /**
+     * 销售单商品集合
+     */
+    @Transient
+    private List<SaleListGoods> saleListGoodsList = null;
 
     @Override
     public String toString() {

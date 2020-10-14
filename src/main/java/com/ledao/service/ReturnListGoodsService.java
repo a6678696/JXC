@@ -20,4 +20,11 @@ public interface ReturnListGoodsService {
      * @return
      */
     List<ReturnListGoods> listByReturnListId(Integer returnListId);
+    /**
+     * 根据条件查询退货单商品
+     *
+     * @param returnListGoods
+     * @return
+     */
+    List<ReturnListGoods> list(ReturnListGoods returnListGoods);
 }

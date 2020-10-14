@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 退货单实体
@@ -72,6 +73,11 @@ public class ReturnList {
      */
     @Transient
     private Date eReturnDate;
+    /**
+     * 退货单商品集合
+     */
+    @Transient
+    List<ReturnListGoods> ReturnListGoodsList = null;
 
     @Override
     public String toString() {

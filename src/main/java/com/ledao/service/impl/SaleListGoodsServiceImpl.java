@@ -3,9 +3,14 @@ package com.ledao.service.impl;
 import com.ledao.entity.SaleListGoods;
 import com.ledao.repository.SaleListGoodsRepository;
 import com.ledao.service.SaleListGoodsService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -41,5 +46,24 @@ public class SaleListGoodsServiceImpl implements SaleListGoodsService {
     @Override
     public Integer getTotalByGoodsId(Integer goodsId) {
         return saleListGoodsRepository.getTotalByGoodsId(goodsId) == null ? 0 : saleListGoodsRepository.getTotalByGoodsId(goodsId);
+    }
+
+    @Override
+    public List<SaleListGoods> list(SaleListGoods saleListGoods) {
+        return saleListGoodsRepository.findAll(new Specification<SaleListGoods>() {
+            @Override
+            public Predicate toPredicate(Root<SaleListGoods> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                Predicate predicate = criteriaBuilder.conjunction();
+                if (saleListGoods != null) {
+                    if (saleListGoods.getTypeId() != null) {
+                        predicate.getExpressions().add(criteriaBuilder.equal(root.get("type"), saleListGoods.getType()));
+                    }
+                    if (saleListGoods.getCodeOrName() != null) {
+                        predicate.getExpressions().add(criteriaBuilder.or(criteriaBuilder.like(root.get("code"), "%" + saleListGoods.getCodeOrName() + "%"), criteriaBuilder.like(root.get("name"), "%" + saleListGoods.getCodeOrName() + "%")));
+                    }
+                }
+                return predicate;
+            }
+        });
     }
 }
