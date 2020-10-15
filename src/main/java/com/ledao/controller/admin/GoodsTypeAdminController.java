@@ -51,7 +51,7 @@ public class GoodsTypeAdminController {
         GoodsType goodsType = new GoodsType();
         goodsType.setName(name);
         goodsType.setState(0);
-        goodsType.setPId(parentId);
+        goodsType.setpId(parentId);
         goodsType.setIcon("icon-folder");
         goodsTypeService.save(goodsType);
         //添加的节点的父节点
@@ -78,8 +78,8 @@ public class GoodsTypeAdminController {
         if (goodsService.findByTypeId(id).size() == 0) {
             GoodsType goodsType = goodsTypeService.findById(id);
             //当要删除的商品类别的父节点下只有一个子节点时,要修改其父节点的状态为0,变成子节点
-            if (goodsTypeService.findByParentId(goodsType.getPId()).size() == 1) {
-                GoodsType parentGoodsType = goodsTypeService.findById(goodsType.getPId());
+            if (goodsTypeService.findByParentId(goodsType.getpId()).size() == 1) {
+                GoodsType parentGoodsType = goodsTypeService.findById(goodsType.getpId());
                 parentGoodsType.setState(0);
                 goodsTypeService.save(parentGoodsType);
             }

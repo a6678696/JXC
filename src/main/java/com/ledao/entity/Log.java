@@ -2,8 +2,6 @@ package com.ledao.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ledao.util.CustomDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,8 +11,7 @@ import java.util.Date;
  * @company
  * @create 2020-01-11 10:58
  */
-@Data
-@AllArgsConstructor
+
 @Entity
 @Table(name = "t_log")
 public class Log {
@@ -75,8 +72,85 @@ public class Log {
 
     }
 
+
     @JsonSerialize(using= CustomDateTimeSerializer.class)
     public Date getTime() {
         return time;
+    }
+
+    public static String getLoginAction() {
+        return LOGIN_ACTION;
+    }
+
+    public static String getLogoutAction() {
+        return LOGOUT_ACTION;
+    }
+
+    public static String getAddAction() {
+        return ADD_ACTION;
+    }
+
+    public static String getDeleteAction() {
+        return DELETE_ACTION;
+    }
+
+    public static String getUpdateAction() {
+        return UPDATE_ACTION;
+    }
+
+    public static String getSearchAction() {
+        return SEARCH_ACTION;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Date getbTime() {
+        return bTime;
+    }
+
+    public void setbTime(Date bTime) {
+        this.bTime = bTime;
+    }
+
+    public Date geteTime() {
+        return eTime;
+    }
+
+    public void seteTime(Date eTime) {
+        this.eTime = eTime;
     }
 }

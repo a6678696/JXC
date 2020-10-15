@@ -89,11 +89,11 @@ public class DamageListServiceImpl implements DamageListService {
                     if (StringUtil.isNotEmpty(damageList.getDamageNumber())) {
                         predicate.getExpressions().add(cb.like(root.get("damageNumber"), "%" + damageList.getDamageNumber().trim() + "%"));
                     }
-                    if (damageList.getBDamageDate() != null) {
-                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("damageDate"), damageList.getBDamageDate()));
+                    if (damageList.getbDamageDate() != null) {
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("damageDate"), damageList.getbDamageDate()));
                     }
-                    if (damageList.getEDamageDate() != null) {
-                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("damageDate"), damageList.getEDamageDate()));
+                    if (damageList.geteDamageDate() != null) {
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("damageDate"), damageList.geteDamageDate()));
                     }
                 }
                 return predicate;

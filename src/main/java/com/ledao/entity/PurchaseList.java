@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * @company
  * @create 2020-01-13 22:27
  */
-@Data
+
 @Entity
 @Table(name = "t_purchase_list")
 public class PurchaseList {
@@ -78,6 +76,102 @@ public class PurchaseList {
      */
     @Transient
     private List<PurchaseListGoods> purchaseListGoodsList = null;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getPurchaseNumber() {
+        return purchaseNumber;
+    }
+
+    public void setPurchaseNumber(String purchaseNumber) {
+        this.purchaseNumber = purchaseNumber;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public float getAmountPayable() {
+        return amountPayable;
+    }
+
+    public void setAmountPayable(float amountPayable) {
+        this.amountPayable = amountPayable;
+    }
+
+    public float getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(float amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Date getbPurchaseDate() {
+        return bPurchaseDate;
+    }
+
+    public void setbPurchaseDate(Date bPurchaseDate) {
+        this.bPurchaseDate = bPurchaseDate;
+    }
+
+    public Date getePurchaseDate() {
+        return ePurchaseDate;
+    }
+
+    public void setePurchaseDate(Date ePurchaseDate) {
+        this.ePurchaseDate = ePurchaseDate;
+    }
+
+    public List<PurchaseListGoods> getPurchaseListGoodsList() {
+        return purchaseListGoodsList;
+    }
+
+    public void setPurchaseListGoodsList(List<PurchaseListGoods> purchaseListGoodsList) {
+        this.purchaseListGoodsList = purchaseListGoodsList;
+    }
 
     @Override
     public String toString() {

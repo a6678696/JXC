@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 /**
@@ -11,7 +9,7 @@ import javax.persistence.*;
  * @company
  * @create 2020-01-12 10:11
  */
-@Data
+
 @Entity
 @Table(name = "t_goods")
 public class Goods {
@@ -92,6 +90,134 @@ public class Goods {
      */
     @Transient
     private Integer saleTotal;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public GoodsType getType() {
+        return type;
+    }
+
+    public void setType(GoodsType type) {
+        this.type = type;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public float getLastPurchasingPrice() {
+        return lastPurchasingPrice;
+    }
+
+    public void setLastPurchasingPrice(float lastPurchasingPrice) {
+        this.lastPurchasingPrice = lastPurchasingPrice;
+    }
+
+    public float getPurchasingPrice() {
+        return purchasingPrice;
+    }
+
+    public void setPurchasingPrice(float purchasingPrice) {
+        this.purchasingPrice = purchasingPrice;
+    }
+
+    public float getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public void setSellingPrice(float sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    public Integer getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+
+    public void setInventoryQuantity(Integer inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+    }
+
+    public Integer getMinNum() {
+        return minNum;
+    }
+
+    public void setMinNum(Integer minNum) {
+        this.minNum = minNum;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getCodeOrName() {
+        return codeOrName;
+    }
+
+    public void setCodeOrName(String codeOrName) {
+        this.codeOrName = codeOrName;
+    }
+
+    public Integer getSaleTotal() {
+        return saleTotal;
+    }
+
+    public void setSaleTotal(Integer saleTotal) {
+        this.saleTotal = saleTotal;
+    }
 
     @Override
     public String toString() {

@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,7 +10,7 @@ import java.io.Serializable;
  * @company
  * @create 2020-01-06 20:16
  */
-@Data
+
 @Entity
 @Table(name="t_role")
 public class Role implements Serializable {
@@ -35,4 +33,30 @@ public class Role implements Serializable {
      */
     @Column(length=1000)
     private String remarks;
+
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 }

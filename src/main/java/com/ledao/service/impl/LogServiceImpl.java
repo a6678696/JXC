@@ -73,11 +73,11 @@ public class LogServiceImpl implements LogService {
                     if(log.getUser()!=null && StringUtil.isNotEmpty(log.getUser().getTrueName())){
                         predicate.getExpressions().add(criteriaBuilder.like(root.get("user").get("trueName"), "%"+log.getUser().getTrueName()+"%"));
                     }
-                    if(log.getBTime()!=null){
-                        predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("time"), log.getBTime()));
+                    if(log.getbTime()!=null){
+                        predicate.getExpressions().add(criteriaBuilder.greaterThanOrEqualTo(root.get("time"), log.getbTime()));
                     }
-                    if(log.getETime()!=null){
-                        predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("time"), log.getETime()));
+                    if(log.geteTime()!=null){
+                        predicate.getExpressions().add(criteriaBuilder.lessThanOrEqualTo(root.get("time"), log.geteTime()));
                     }
                 }
                 return predicate;
@@ -106,11 +106,11 @@ public class LogServiceImpl implements LogService {
                     if(log.getUser()!=null && StringUtil.isNotEmpty(log.getUser().getTrueName())){
                         predicate.getExpressions().add(cb.like(root.get("user").get("trueName"), "%"+log.getUser().getTrueName()+"%"));
                     }
-                    if(log.getBTime()!=null){
-                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("time"), log.getBTime()));
+                    if(log.getbTime()!=null){
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("time"), log.getbTime()));
                     }
-                    if(log.getETime()!=null){
-                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("time"), log.getETime()));
+                    if(log.geteTime()!=null){
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("time"), log.geteTime()));
                     }
                 }
                 return predicate;

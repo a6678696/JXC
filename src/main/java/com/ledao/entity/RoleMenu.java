@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,7 +10,7 @@ import java.io.Serializable;
  * @company
  * @create 2020-01-06 20:20
  */
-@Data
+
 @Entity
 @Table(name = "t_role_menu")
 public class RoleMenu implements Serializable {
@@ -37,4 +35,30 @@ public class RoleMenu implements Serializable {
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
 }

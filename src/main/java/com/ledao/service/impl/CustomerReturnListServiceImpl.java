@@ -102,11 +102,11 @@ public class CustomerReturnListServiceImpl implements CustomerReturnListService 
                     if (customerReturnList.getState() != null) {
                         predicate.getExpressions().add(cb.equal(root.get("state"), customerReturnList.getState()));
                     }
-                    if (customerReturnList.getBCustomerReturnDate() != null) {
-                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.getBCustomerReturnDate()));
+                    if (customerReturnList.getbCustomerReturnDate() != null) {
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.getbCustomerReturnDate()));
                     }
-                    if (customerReturnList.getECustomerReturnDate() != null) {
-                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.getECustomerReturnDate()));
+                    if (customerReturnList.geteCustomerReturnDate() != null) {
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("customerReturnDate"), customerReturnList.geteCustomerReturnDate()));
                     }
                 }
                 return predicate;

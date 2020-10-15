@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 /**
@@ -11,7 +9,7 @@ import javax.persistence.*;
  * @company
  * @create 2020-01-12 10:07
  */
-@Data
+
 @Entity
 @Table(name = "t_goodstype")
 public class GoodsType {
@@ -40,6 +38,46 @@ public class GoodsType {
      * 父菜单Id
      */
     private Integer pId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Integer getpId() {
+        return pId;
+    }
+
+    public void setpId(Integer pId) {
+        this.pId = pId;
+    }
 
     @Override
     public String toString() {

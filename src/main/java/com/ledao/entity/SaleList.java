@@ -1,7 +1,5 @@
 package com.ledao.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * @company
  * @create 2020-01-13 22:27
  */
-@Data
+
 @Entity
 @Table(name = "t_sale_list")
 public class SaleList {
@@ -78,6 +76,102 @@ public class SaleList {
      */
     @Transient
     private List<SaleListGoods> saleListGoodsList = null;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getSaleNumber() {
+        return saleNumber;
+    }
+
+    public void setSaleNumber(String saleNumber) {
+        this.saleNumber = saleNumber;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Date getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(Date saleDate) {
+        this.saleDate = saleDate;
+    }
+
+    public float getAmountPayable() {
+        return amountPayable;
+    }
+
+    public void setAmountPayable(float amountPayable) {
+        this.amountPayable = amountPayable;
+    }
+
+    public float getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(float amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Date getbSaleDate() {
+        return bSaleDate;
+    }
+
+    public void setbSaleDate(Date bSaleDate) {
+        this.bSaleDate = bSaleDate;
+    }
+
+    public Date geteSaleDate() {
+        return eSaleDate;
+    }
+
+    public void seteSaleDate(Date eSaleDate) {
+        this.eSaleDate = eSaleDate;
+    }
+
+    public List<SaleListGoods> getSaleListGoodsList() {
+        return saleListGoodsList;
+    }
+
+    public void setSaleListGoodsList(List<SaleListGoods> saleListGoodsList) {
+        this.saleListGoodsList = saleListGoodsList;
+    }
 
     @Override
     public String toString() {

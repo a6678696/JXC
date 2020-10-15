@@ -89,11 +89,11 @@ public class OverflowListServiceImpl implements OverflowListService {
                     if (StringUtil.isNotEmpty(overflowList.getOverflowNumber())) {
                         predicate.getExpressions().add(cb.like(root.get("overflowNumber"), "%" + overflowList.getOverflowNumber().trim() + "%"));
                     }
-                    if (overflowList.getBOverflowDate() != null) {
-                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("overflowDate"), overflowList.getBOverflowDate()));
+                    if (overflowList.getbOverflowDate() != null) {
+                        predicate.getExpressions().add(cb.greaterThanOrEqualTo(root.get("overflowDate"), overflowList.getbOverflowDate()));
                     }
-                    if (overflowList.getEOverflowDate() != null) {
-                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("overflowDate"), overflowList.getEOverflowDate()));
+                    if (overflowList.geteOverflowDate() != null) {
+                        predicate.getExpressions().add(cb.lessThanOrEqualTo(root.get("overflowDate"), overflowList.geteOverflowDate()));
                     }
                 }
                 return predicate;
