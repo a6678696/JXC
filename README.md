@@ -1,9 +1,11 @@
 # JXC
 SpringBoot进销存系统
 
-1.项目演示地址:
+1.项目地址:
 
-http://jxc.zoutl.cn/   (用户名:admin  密码:admin)
+介绍地址:http://www.zoutl.cn/blog/23
+
+演示地址:http://jxc.zoutl.cn/   (用户名:admin  密码:admin)
 
 2.使用的技术：
 
