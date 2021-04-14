@@ -5,9 +5,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3306/db_jxc?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/db_jxc?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     open-in-view: false
