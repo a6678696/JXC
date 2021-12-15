@@ -5,7 +5,7 @@ SpringBoot进销存系统
 
 详细介绍地址:https://blog.zoutl.cn/13.html
 
-项目演示地址:http://jxc.zoutl.cn/
+项目演示地址:http://jxc.zoutl.cn/login.html
 
 用户名和密码如下:
 
