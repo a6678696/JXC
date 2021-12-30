@@ -2,8 +2,6 @@
 
 GitHub地址：https://github.com/a6678696/JXC
 
-项目演示地址：[http://jxc.zoutl.cn/login.html](http://jxc.zoutl.cn/login.html)
-
 ### 使用的技术
 
 本系统使用Spring Boot架构，数据访问层采用Spring Data Jpa，安全框架采用Shiro，实现了完整权限系统，Controller方法采用Shiro注解，来实现有效的权限控制；界面采用了EasyUI技术；
