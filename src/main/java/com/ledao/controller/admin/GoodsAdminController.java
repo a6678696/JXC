@@ -172,9 +172,11 @@ public class GoodsAdminController {
     public Map<String, Object> save(Goods goods) throws Exception {
         Map<String, Object> resultMap = new HashMap<>(16);
         if (goods.getId() != null) {
+            goods.setInventoryQuantity(goodsService.findById(goods.getId()).getInventoryQuantity());
             logService.save(new Log(Log.UPDATE_ACTION, "更新商品信息" + goods));
         } else {
             logService.save(new Log(Log.ADD_ACTION, "添加商品信息" + goods));
+            goods.setInventoryQuantity(0);
             goods.setLastPurchasingPrice(goods.getPurchasingPrice());
         }
         goodsService.save(goods);
